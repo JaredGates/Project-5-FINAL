@@ -6,6 +6,8 @@
  */
 
 public class AttackMove extends Move {
+    //Variables
+    int power;
 
     /**
      * Constructor

@@ -8,7 +8,15 @@
 
 public class Pokemon {
     //Variables
-
+        String name;
+        String[] names;
+        int currentHealth;
+        int healthStat;
+        int attackStat;
+        int defenceStat;
+        int specialAttackStat;
+        int specialDefenceStat;
+        int speedStat;
     /**
      * Constructor for the class
      */

@@ -7,6 +7,10 @@
  */
 
 public abstract class Move {
+    //Variables
+    String name;
+    double accuracy;
+    String type;
 
     /**
      * Constructor

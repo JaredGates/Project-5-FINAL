@@ -7,6 +7,9 @@
  */
 
 public class StatusMove extends Move {
+    //Variables
+    String status;
+    double statusChance;
 
     public StatusMove(){
         //stub

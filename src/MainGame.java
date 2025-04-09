@@ -11,6 +11,13 @@ public class MainGame {
     }
 
     /**
+     * This method will go and import the entirety of the cvs file into the program via a hashmap.
+     */
+    public static void importCSVFile(){
+        //stub
+    }
+
+    /**
      * This method will check to see if a player has won the game, if they have not then it will return false,
      * otherwise return true.
      * @return boolean
@@ -30,7 +37,7 @@ public class MainGame {
     /**
      * This method will check the typing of the move that was used with the pokemon recieving the move
      * if the move is of a right typing then a certain multiplier will be put onto the damage done.
-     * @return
+     * @return double that is the multiplier.
      */
     public static double typingCheck(){
         //stub

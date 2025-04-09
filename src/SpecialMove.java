@@ -8,6 +8,10 @@
  */
 
 public class SpecialMove extends Move {
+    //Variables
+    int damage;
+    String status;
+    double statusChance;
 
     public SpecialMove(){
         //stub
