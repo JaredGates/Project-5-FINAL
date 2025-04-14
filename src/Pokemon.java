@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Random;
+
 /**
  * This class contains the information for each Pokémon, which includes typing, health, stats and the calculation for
  * damage.
@@ -8,20 +11,44 @@
 
 public class Pokemon {
     //Variables
-        String name;
-        String[] names;
-        int currentHealth;
-        int healthStat;
-        int attackStat;
-        int defenceStat;
-        int specialAttackStat;
-        int specialDefenceStat;
-        int speedStat;
+        private String name;
+        private ArrayList<String> types=new ArrayList<>();
+        private String type1;
+        private String type2;
+        private int currentHealth;
+        private int healthStat;
+        private int attackStat;
+        private int defenceStat;
+        private int specialAttackStat;
+        private int specialDefenceStat;
+        private int speedStat;
+
     /**
      * Constructor for the class
      */
-    public Pokemon(){
-        //stub
+    public Pokemon(String name, String type1, int currentHealth, int healthStat, int attackStat, int defenceStat, int specialAttackStat, int specialDefenceStat, int speedStat){
+        this.name=name;
+        this.type1=type1;
+        this.currentHealth=currentHealth;
+        this.healthStat=healthStat;
+        this.attackStat=attackStat;
+        this.defenceStat=defenceStat;
+        this.specialAttackStat=specialAttackStat;
+        this.specialDefenceStat=specialDefenceStat;
+        this.speedStat=speedStat;
+    }
+
+    public Pokemon(String name, String type1, String type2, int currentHealth, int healthStat, int attackStat, int defenceStat, int specialAttackStat, int specialDefenceStat, int speedStat){
+        this.name=name;
+        this.type1=type1;
+        this.type2=type2;
+        this.currentHealth=currentHealth;
+        this.healthStat=healthStat;
+        this.attackStat=attackStat;
+        this.defenceStat=defenceStat;
+        this.specialAttackStat=specialAttackStat;
+        this.specialDefenceStat=specialDefenceStat;
+        this.speedStat=speedStat;
     }
 
     /**
@@ -29,18 +56,31 @@ public class Pokemon {
      * @return string of name
      */
     public String getName(){
-        //stub
-        return "";
+        return name;
     }
 
     /**
      * returns the typing of the pokemon
-     * @param types which indicates the potential typing of the pokemon
+     * @param numTypes which indicates the potential typing of the pokemon
      * @return a list that contains all the typing of the pokemon
      */
-    public String[] getTypes(int types){
-        //stub
-        return null;
+    public ArrayList<String> getTypes(int numTypes){
+        if(numTypes==1){
+            types.add(getType1());
+        } else {
+            types.add(getType1());
+            types.add(getType2());
+        }
+
+        return types;
+    }
+
+    public String getType1(){
+        return type1;
+    }
+
+    public String getType2(){
+        return type2;
     }
 
     /**
@@ -48,8 +88,7 @@ public class Pokemon {
      * @return integer
      */
     public int getCurrentHealth(){
-        //stub
-        return -1;
+        return currentHealth;
     }
 
     /**
@@ -57,17 +96,15 @@ public class Pokemon {
      * @return integer
      */
     public int getHealthStat(){
-        //stub
-        return -1;
+        return healthStat;
     }
 
     /**
      * Returns the Damage stat for the pokemon
      * @return int
      */
-    public int getDamageStat(){
-        //stub
-        return -1;
+    public int getAttackStat(){
+        return attackStat;
     }
 
     /**
@@ -75,17 +112,15 @@ public class Pokemon {
      * @return int
      */
     public int getDefenceStat(){
-        //stub
-        return -1;
+        return defenceStat;
     }
 
     /**
      * Returns the Special Damage stat for the pokemon
      * @return int
      */
-    public int getSDamageStat(){
-        //stub
-        return -1;
+    public int getSAttackStat(){
+        return specialAttackStat;
     }
 
     /**
@@ -93,8 +128,7 @@ public class Pokemon {
      * @return int
      */
     public int getSDefenceStat(){
-        //stub
-        return -1;
+        return specialDefenceStat;
     }
 
     /**
@@ -102,14 +136,35 @@ public class Pokemon {
      * @return int
      */
     public int getSpeedStat(){
-        //stub
-        return -1;
+        return speedStat;
     }
 
     /**
      * Method to calculate damage using the generation one formula for damage calculation.
      */
-    public void calcDamage(){
-        //stub
+    public void calcDamage(AttackMove moveUsed, Pokemon other){
+        int damage;
+        double STAB = 0;
+        boolean sameType = false;
+        
+        double type1Effect=getTypeEffect(moveUsed.getType(), other);
+        double type2Effect=getTypeEffect(moveUsed.getType(), other);
+        Random rn=new Random();
+
+        //Calculation for STAB
+            for(int i=0;i<types.size();i++){
+                if(moveUsed.getType().equalsIgnoreCase(types.get(i))&& !sameType){
+                    STAB=1.5;
+                    sameType=true;
+                } else {
+                    STAB=1.0;
+                }
+            }
+
+        damage= (int) ((((2*100)/5+2)*moveUsed.getPower()*(this.getAttackStat()/other.getDefenceStat())/50+2)*STAB*(rn.nextInt(255-217+1)-217)/255*type1Effect*type2Effect);
+    }
+    
+    public double getTypeEffect(String moveType, Pokemon other){
+        return 1;
     }
 }

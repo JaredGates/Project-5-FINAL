@@ -9,21 +9,23 @@
 
 public class SpecialMove extends Move {
     //Variables
-    int damage;
-    String status;
-    double statusChance;
+    private int power;
+    private String status;
+    private double statusChance;
 
-    public SpecialMove(){
-        //stub
+    public SpecialMove(String name, double accuracy, String type, String status, double statusChance, int power){
+        super(name, accuracy, type);
+        this.status=status;
+        this.statusChance=statusChance;
+        this.power=power;
     }
 
     /**
      * Returns the power of the move
      * @return int
      */
-    public int getDamage(){
-        //stub
-        return -1;
+    public int getPower(){
+        return power;
     }
 
     /**
@@ -32,8 +34,7 @@ public class SpecialMove extends Move {
      * @return string
      */
     public String getStatus(){
-        //stub
-        return "";
+        return status;
     }
 
     /**
@@ -41,8 +42,7 @@ public class SpecialMove extends Move {
      * @return double
      */
     public double getStatusChance(){
-        //stub
-        return -1;
+        return statusChance;
     }
 
     /**
@@ -50,7 +50,6 @@ public class SpecialMove extends Move {
      * @return boolean
      */
     public boolean statusAfflict(){
-        //stub
         return false;
     }
 }

@@ -7,13 +7,14 @@
 
 public class AttackMove extends Move {
     //Variables
-    int power;
+    private int power;
 
     /**
      * Constructor
      */
-    public AttackMove(){
-        //stub
+    public AttackMove(String name, double accuracy, String type,int power){
+        super(name, accuracy, type);
+        this.power=power;
     }
 
     /**
@@ -21,8 +22,7 @@ public class AttackMove extends Move {
      * @return int
      */
     public int getPower(){
-        //Stub
-        return -1;
+        return power;
     }
 
 

@@ -8,15 +8,17 @@
 
 public abstract class Move {
     //Variables
-    String name;
-    double accuracy;
-    String type;
+    private String name;
+    private double accuracy;
+    private String type;
 
     /**
      * Constructor
      */
-    public Move(){
-        //stub
+    public Move(String name, double accuracy, String type){
+        this.name=name;
+        this.accuracy=accuracy;
+        this.type=type;
     }
 
     /**
@@ -24,8 +26,7 @@ public abstract class Move {
      * @return String
      */
     public String getNameOfMove(){
-        //stub
-        return "";
+        return name;
     }
 
     /**
@@ -33,8 +34,7 @@ public abstract class Move {
      * @return double
      */
     public double getAccuracy(){
-        //stub
-        return -1;
+        return accuracy;
     }
 
     /**
@@ -42,7 +42,6 @@ public abstract class Move {
      * @return String
      */
     public String getType(){
-        //stub
-        return "";
+        return type;
     }
 }

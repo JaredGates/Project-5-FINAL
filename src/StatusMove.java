@@ -8,11 +8,13 @@
 
 public class StatusMove extends Move {
     //Variables
-    String status;
-    double statusChance;
+    private String status;
+    private double statusChance;
 
-    public StatusMove(){
-        //stub
+    public StatusMove(String name, double accuracy, String type, String status, double statusChance){
+        super(name, accuracy, type);
+        this.status=status;
+        this.statusChance=statusChance;
     }
 
     /**
@@ -21,8 +23,7 @@ public class StatusMove extends Move {
      * @return string
      */
     public String getStatus(){
-        //stub
-        return "";
+        return status;
     }
 
     /**
@@ -30,8 +31,7 @@ public class StatusMove extends Move {
      * @return double
      */
     public double getStatusChance(){
-        //stub
-        return -1;
+        return statusChance;
     }
 
     /**
@@ -39,7 +39,6 @@ public class StatusMove extends Move {
      * @return boolean
      */
     public boolean statusAfflict(){
-        //stub
         return false;
     }
 }
