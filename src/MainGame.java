@@ -20,7 +20,9 @@ public class MainGame {
     public static void importCSVFile() throws FileNotFoundException {
         Scanner fileScan=new Scanner(new File("COMP 220 Final Project Excel.csv"));
 
-        System.out.println(fileScan.nextLine());
+        fileScan.nextLine();
+
+
     }
 
     /**

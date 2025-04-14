@@ -1,5 +1,9 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * This class contains the information for each Pokémon, which includes typing, health, stats and the calculation for
@@ -142,15 +146,22 @@ public class Pokemon {
     /**
      * Method to calculate damage using the generation one formula for damage calculation.
      */
-    public void calcDamage(AttackMove moveUsed, Pokemon other){
+    public int calcDamage(AttackMove moveUsed, Pokemon other) throws FileNotFoundException {
         int damage;
         double STAB = 0;
         int crit;
         boolean critMade=false;
         boolean sameType = false;
+        double type1Effect;
+        double type2Effect;
         
-        double type1Effect=getTypeEffect(moveUsed.getType(), other);
-        double type2Effect=getTypeEffect(moveUsed.getType(), other);
+        type1Effect=getTypeEffect(moveUsed.getType(), other.getType1());
+        try {
+            type2Effect = getTypeEffect(moveUsed.getType(), other.getType2());
+        } catch (Exception e){
+            type2Effect=1;
+        }
+
         Random rn=new Random();
 
         //Calculation for STAB
@@ -178,9 +189,66 @@ public class Pokemon {
         if(critMade) {
             System.out.println("You got a crit!");
         }
+
+        return damage;
     }
     
-    public double getTypeEffect(String moveType, Pokemon other){
-        return 1;
+    public double getTypeEffect(String moveType, String pokemonType) throws FileNotFoundException {
+        Scanner weaknessScan=new Scanner(new File("WeaknessChart.csv"));
+
+        //2d arraylist for comparing the types
+            ArrayList<ArrayList<String>> typeChart =new ArrayList<>();
+
+            while(weaknessScan.hasNextLine()){
+                ArrayList<String> row=new ArrayList<>();
+
+                String line=weaknessScan.nextLine();
+
+                Scanner lineScan=new Scanner(line);
+                lineScan.useDelimiter(",");
+
+                for(int i=0;lineScan.hasNext();i++){
+                    row.add(lineScan.next());
+                }
+
+                typeChart.add(row);
+            }
+
+
+        //Get the value
+            int moveTypeNum=0;
+
+            for(int i=0;i<typeChart.size();i++){
+                ArrayList<String> temp = typeChart.get(i);
+                if(temp.get(1).equalsIgnoreCase(moveType)){
+                    moveTypeNum=i;
+                }
+            }
+
+            int pokeTypeNum=0;
+            ArrayList<String> firstRow=typeChart.get(1);
+
+            for(int i=0;i<firstRow.size();i++){
+                if(firstRow.get(i).equalsIgnoreCase(pokemonType)){
+                    pokeTypeNum=i;
+                }
+            }
+
+
+        //Get number
+            double multNum=1;
+            ArrayList<String> temp=typeChart.get(pokeTypeNum);
+            String multStr=temp.get(pokeTypeNum);
+
+            if(multStr.equalsIgnoreCase("0x")){
+                multNum=0;
+            } else if(multStr.equalsIgnoreCase("1/2x")){
+                multNum= 0.5;
+            } else if(multStr.equalsIgnoreCase("2x")){
+                multNum=2;
+            }
+
+            return multNum;
+
     }
 }
