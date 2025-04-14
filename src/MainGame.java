@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 /**
  * This main class houses the majority of the code as it runs through the game loop until a player has lost.
  * The class will take in a cvs file and generate two random pokemon from that list to put into the game.
@@ -6,15 +10,17 @@
  */
 
 public class MainGame {
-    public static void main(String[] args){
-
+    public static void main(String[] args) throws FileNotFoundException {
+        importCSVFile();
     }
 
     /**
      * This method will go and import the entirety of the cvs file into the program via a hashmap.
      */
-    public static void importCSVFile(){
+    public static void importCSVFile() throws FileNotFoundException {
+        Scanner fileScan=new Scanner(new File("COMP 220 Final Project Excel.csv"));
 
+        System.out.println(fileScan.nextLine());
     }
 
     /**
