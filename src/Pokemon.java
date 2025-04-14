@@ -145,6 +145,8 @@ public class Pokemon {
     public void calcDamage(AttackMove moveUsed, Pokemon other){
         int damage;
         double STAB = 0;
+        int crit;
+        boolean critMade=false;
         boolean sameType = false;
         
         double type1Effect=getTypeEffect(moveUsed.getType(), other);
@@ -161,7 +163,21 @@ public class Pokemon {
                 }
             }
 
-        damage= (int) ((((2*100)/5+2)*moveUsed.getPower()*(this.getAttackStat()/other.getDefenceStat())/50+2)*STAB*(rn.nextInt(255-217+1)-217)/255*type1Effect*type2Effect);
+        //Calculation for crit
+            int threshold = getSpeedStat()/2;
+
+            if(rn.nextInt(255)<threshold){
+                critMade=true;
+                crit=2;
+            } else {
+                crit=1;
+            }
+
+        damage= (int) (((double) (((2 * 100 * crit) / 5 + 2) * moveUsed.getPower() * (this.getAttackStat() / other.getDefenceStat())) /50+2)*STAB*(rn.nextInt(255-217+1)-217)/255*type1Effect*type2Effect);
+
+        if(critMade) {
+            System.out.println("You got a crit!");
+        }
     }
     
     public double getTypeEffect(String moveType, Pokemon other){
