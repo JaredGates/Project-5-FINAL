@@ -35,7 +35,7 @@ public class MainGame {
     /**
      * This method will go and import the entirety of the cvs file into the program via a hashmap.
      */
-    public static HashMap importCSVFile() throws FileNotFoundException {
+    public static HashMap<String, Pokemon> importCSVFile() throws FileNotFoundException {
         Scanner fileScan=new Scanner(new File("COMP 220 Final Project Excel.csv"));
 
         fileScan.nextLine();
