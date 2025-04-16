@@ -95,6 +95,10 @@ public class Pokemon {
         return currentHealth;
     }
 
+    public void setCurrentHealth(int damage){
+        currentHealth=currentHealth-damage;
+    }
+
     /**
      * Returns the Health stat of the pokemon which is also used as the max health of the pokemon
      * @return integer
