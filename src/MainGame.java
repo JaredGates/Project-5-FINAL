@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
+import static java.lang.Integer.parseInt;
+
 /**
  * This main class houses the majority of the code as it runs through the game loop until a player has lost.
  * The class will take in a cvs file and generate two random pokemon from that list to put into the game.
@@ -36,11 +38,37 @@ public class MainGame {
      * This method will go and import the entirety of the cvs file into the program via a hashmap.
      */
     public static HashMap<String, Pokemon> importCSVFile() throws FileNotFoundException {
-        Scanner fileScan=new Scanner(new File("COMP 220 Final Project Excel.csv"));
-
+        Scanner fileScan = new Scanner(new File("COMP 220 Final Project Excel.csv"));
         fileScan.nextLine();
 
-        return null;
+        HashMap<String, Pokemon> newDatabaseEntry = new HashMap<>();
+
+        fileScan.useDelimiter(",");
+        while (fileScan.hasNext()) {
+            String pokeNum = fileScan.next();
+            Pokemon newPoke;
+
+            String name = fileScan.next();
+            String type1 = fileScan.next();
+            String type2 = fileScan.next();
+            int currentHealth = parseInt(fileScan.next());
+            int healthStat = currentHealth;
+            int attackStat = parseInt(fileScan.next());
+            int defenceStat = parseInt(fileScan.next());
+            int sAttackStat = parseInt(fileScan.next());
+            int sDefenceStat = parseInt(fileScan.next());
+            int speedStat = parseInt(fileScan.next());
+
+            if (type2 == null) {
+                newPoke = new Pokemon(name, type1, currentHealth, healthStat, attackStat, defenceStat, sAttackStat, sDefenceStat, speedStat);
+            } else {
+                newPoke = new Pokemon(name, type1, type2, currentHealth, healthStat, attackStat, defenceStat, sAttackStat, sDefenceStat, speedStat);
+            }
+
+            newDatabaseEntry.put(pokeNum, newPoke);
+        }
+
+        return newDatabaseEntry;
     }
 
     /**

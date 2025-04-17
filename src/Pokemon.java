@@ -33,6 +33,7 @@ public class Pokemon {
     public Pokemon(String name, String type1, int currentHealth, int healthStat, int attackStat, int defenceStat, int specialAttackStat, int specialDefenceStat, int speedStat){
         this.name=name;
         this.type1=type1;
+        type2=null;
         this.currentHealth=currentHealth;
         this.healthStat=healthStat;
         this.attackStat=attackStat;
