@@ -18,7 +18,7 @@ public class MainGame {
     public static void main(String[] args) throws FileNotFoundException {
 
         //Get data into the hashmap
-            HashMap<String, Pokemon> database;
+            HashMap<Integer, Pokemon> database;
             database=importCSVFile();
 
         //Get two random numbers for the two Pokémon that will be used
@@ -30,6 +30,9 @@ public class MainGame {
             Pokemon Poke1=database.get(PokeRandomNum1);
             Pokemon Poke2=database.get(PokeRandomNum2);
 
+            System.out.println(Poke1.getName());
+            System.out.println(Poke2.getName());
+
         //Call the game loop method and run the game
             gameLoop(Poke1, Poke2);
     }
@@ -37,27 +40,30 @@ public class MainGame {
     /**
      * This method will go and import the entirety of the cvs file into the program via a hashmap.
      */
-    public static HashMap<String, Pokemon> importCSVFile() throws FileNotFoundException {
+    public static HashMap<Integer, Pokemon> importCSVFile() throws FileNotFoundException {
         Scanner fileScan = new Scanner(new File("COMP 220 Final Project Excel.csv"));
         fileScan.nextLine();
 
-        HashMap<String, Pokemon> newDatabaseEntry = new HashMap<>();
+        HashMap<Integer, Pokemon> newDatabaseEntry = new HashMap<>();
 
-        fileScan.useDelimiter(",");
+
         while (fileScan.hasNext()) {
-            String pokeNum = fileScan.next();
+            String newLine=fileScan.nextLine();
+            Scanner lineScan = new Scanner(newLine);
+            lineScan.useDelimiter(",");
+            int pokeNum = parseInt(lineScan.next());
             Pokemon newPoke;
 
-            String name = fileScan.next();
-            String type1 = fileScan.next();
-            String type2 = fileScan.next();
-            int currentHealth = parseInt(fileScan.next());
+            String name = lineScan.next();
+            String type1 = lineScan.next();
+            String type2 = lineScan.next();
+            int currentHealth = parseInt(lineScan.next());
             int healthStat = currentHealth;
-            int attackStat = parseInt(fileScan.next());
-            int defenceStat = parseInt(fileScan.next());
-            int sAttackStat = parseInt(fileScan.next());
-            int sDefenceStat = parseInt(fileScan.next());
-            int speedStat = parseInt(fileScan.next());
+            int attackStat = parseInt(lineScan.next());
+            int defenceStat = parseInt(lineScan.next());
+            int sAttackStat = parseInt(lineScan.next());
+            int sDefenceStat = parseInt(lineScan.next());
+            int speedStat = parseInt(lineScan.next());
 
             if (type2 == null) {
                 newPoke = new Pokemon(name, type1, currentHealth, healthStat, attackStat, defenceStat, sAttackStat, sDefenceStat, speedStat);
@@ -113,6 +119,7 @@ public class MainGame {
                     if(player1.getSpeedStat()>player2.getSpeedStat()){
                         player2.setCurrentHealth(player2.calcDamage(move1, player1));
 
+
                         if(!playerWon(player1,player2)) {
                             player1.setCurrentHealth(player1.calcDamage(move2, player2));
                         }
@@ -123,6 +130,26 @@ public class MainGame {
                             player2.setCurrentHealth(player2.calcDamage(move1, player1));
                         }
                     }
+
+
             }
+    }
+
+    public static int conditionDamage(Pokemon mon, StatusMove moveUsed) {
+        if (!mon.getStatus().equals("none")) {
+            return 1;
+        } else {
+            //See if the effect triggers
+            Random rn = new Random();
+            int trigger = rn.nextInt(100);
+
+            //Decision statement to see if it triggers
+            if (trigger > moveUsed.getStatusChance()) {
+                mon.setStatus(moveUsed.getStatus());
+                return 1;
+            } else {
+                return 0;
+            }
+        }
     }
 }

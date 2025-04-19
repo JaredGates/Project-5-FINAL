@@ -19,6 +19,7 @@ public class Pokemon {
         private ArrayList<String> types=new ArrayList<>();
         private String type1;
         private String type2;
+        private String status="none";
         private int currentHealth;
         private int healthStat;
         private int attackStat;
@@ -86,6 +87,14 @@ public class Pokemon {
 
     public String getType2(){
         return type2;
+    }
+
+    public String getStatus(){
+        return status;
+    }
+
+    public void setStatus(String s){
+        status=s;
     }
 
     /**
