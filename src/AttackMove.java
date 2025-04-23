@@ -13,8 +13,17 @@ public class AttackMove extends Move {
      * Constructor
      */
     public AttackMove(String name, double accuracy, String type,int power){
-        super(name, accuracy, type);
+        super(name, accuracy, type, "Attack");
         this.power=power;
+    }
+
+    public AttackMove(AttackMove other){
+        super(other);
+        this.power=other.power;
+    }
+
+    public AttackMove newCopy(){
+        return new AttackMove(this);
     }
 
     /**

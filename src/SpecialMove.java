@@ -14,10 +14,21 @@ public class SpecialMove extends Move {
     private double statusChance;
 
     public SpecialMove(String name, double accuracy, String type, String status, double statusChance, int power){
-        super(name, accuracy, type);
+        super(name, accuracy, type, "Special");
         this.status=status;
         this.statusChance=statusChance;
         this.power=power;
+    }
+
+    public SpecialMove(SpecialMove other){
+        super(other);
+        this.status=other.status;
+        this.statusChance=other.statusChance;
+        this.power=other.power;
+    }
+
+    public SpecialMove newCopy(){
+        return new SpecialMove(this);
     }
 
     /**

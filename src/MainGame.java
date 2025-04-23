@@ -1,5 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -35,7 +38,6 @@ public class MainGame {
     public static HashMap importCSVFile() throws FileNotFoundException {
         Scanner fileScan=new Scanner(new File("COMP 220 Final Project Excel.csv"));
 
-        System.out.println(fileScan.nextLine());
         fileScan.nextLine();
 
         return null;

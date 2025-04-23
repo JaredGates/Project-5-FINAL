@@ -11,14 +11,29 @@ public abstract class Move {
     private String name;
     private double accuracy;
     private String type;
+    private String typeOfMove;
 
     /**
      * Constructor
      */
-    public Move(String name, double accuracy, String type){
+    public Move(String name, double accuracy, String type,String typeOfMove){
         this.name=name;
         this.accuracy=accuracy;
         this.type=type;
+        this.typeOfMove=typeOfMove;
+    }
+
+    public Move(Move other){
+        this.name=other.name;
+        this.accuracy= other.accuracy;
+        this.type= other.type;
+        this.typeOfMove=other.typeOfMove;
+    }
+
+    public abstract Move newCopy();
+
+    public String getTypeOfMove(){
+        return typeOfMove;
     }
 
     /**
@@ -44,4 +59,6 @@ public abstract class Move {
     public String getType(){
         return type;
     }
+
+
 }
