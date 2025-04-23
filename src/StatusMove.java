@@ -12,9 +12,19 @@ public class StatusMove extends Move {
     private double statusChance;
 
     public StatusMove(String name, double accuracy, String type, String status, double statusChance){
-        super(name, accuracy, type);
+        super(name, accuracy, type, "Status");
         this.status=status;
         this.statusChance=statusChance;
+    }
+
+    public StatusMove(StatusMove other){
+        super(other);
+        this.status=other.status;
+        this.statusChance=other.statusChance;
+    }
+
+    public StatusMove newCopy(){
+        return new StatusMove(this);
     }
 
     /**

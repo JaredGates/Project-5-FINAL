@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
@@ -38,43 +37,135 @@ public class MainGame {
     }
 
     /**
-     * This method will go and import the entirety of the cvs file into the program via a hashmap.
+     * This method will go through the CSV file provided (or potentially one made) and put all pokemon from it into a hashmap
+     * @return a hashmap with a integer key and Pokemon value
+     * @throws FileNotFoundException if file not found
      */
     public static HashMap<Integer, Pokemon> importCSVFile() throws FileNotFoundException {
-        Scanner fileScan = new Scanner(new File("COMP 220 Final Project Excel.csv"));
-        fileScan.nextLine();
+        //Scanner to read in the file
+            Scanner fileScan = new Scanner(new File("COMP 220 Final Project Excel.csv"));
 
-        HashMap<Integer, Pokemon> newDatabaseEntry = new HashMap<>();
+        //Read in the blank line at the beginning
+            fileScan.nextLine();
+
+        //HashMap to get all the pokemon into a hashmap to be returned, keys are the pokedex entries
+            HashMap<Integer, Pokemon> newDatabaseEntry = new HashMap<>();
 
 
-        while (fileScan.hasNext()) {
-            String newLine=fileScan.nextLine();
-            Scanner lineScan = new Scanner(newLine);
-            lineScan.useDelimiter(",");
-            int pokeNum = parseInt(lineScan.next());
-            Pokemon newPoke;
+        //While loop to read in each line of the CSV file and get each of the pokemon's stats
+            while (fileScan.hasNext()) {
 
-            String name = lineScan.next();
-            String type1 = lineScan.next();
-            String type2 = lineScan.next();
-            int currentHealth = parseInt(lineScan.next());
-            int healthStat = currentHealth;
-            int attackStat = parseInt(lineScan.next());
-            int defenceStat = parseInt(lineScan.next());
-            int sAttackStat = parseInt(lineScan.next());
-            int sDefenceStat = parseInt(lineScan.next());
-            int speedStat = parseInt(lineScan.next());
+                //Create another scanner that reads each line using a delimiter of a comma due to the CSV format
+                    String newLine=fileScan.nextLine();
+                    Scanner lineScan = new Scanner(newLine);
+                    lineScan.useDelimiter(",");
 
-            if (type2 == null) {
-                newPoke = new Pokemon(name, type1, currentHealth, healthStat, attackStat, defenceStat, sAttackStat, sDefenceStat, speedStat);
-            } else {
-                newPoke = new Pokemon(name, type1, type2, currentHealth, healthStat, attackStat, defenceStat, sAttackStat, sDefenceStat, speedStat);
+                //Reads in the first value which is its pokedex entry, this will be the key
+                    int pokeNum = parseInt(lineScan.next());
+                    Pokemon newPoke;
+
+                //Read in each of the stats of the pokemon
+                    String name = lineScan.next();
+                    String type1 = lineScan.next();
+                    String type2 = lineScan.next();
+                    int currentHealth = parseInt(lineScan.next());
+                    int healthStat = currentHealth;
+                    int attackStat = parseInt(lineScan.next());
+                    int defenceStat = parseInt(lineScan.next());
+                    int sAttackStat = parseInt(lineScan.next());
+                    int sDefenceStat = parseInt(lineScan.next());
+                    int speedStat = parseInt(lineScan.next());
+//                    String move1=lineScan.next();
+//                    String move2=lineScan.next();
+//                    String move3=lineScan.next();
+//                    String move4=lineScan.next();
+
+                    String move1=null;
+                    String move2=null;
+                    String move3=null;
+                    String move4=null;
+
+                //Create a pokemon object, depending on if type2 was null there will be a different object created
+                    if (type2 == null) {
+                        newPoke = new Pokemon(name, type1, healthStat, attackStat, defenceStat, sAttackStat, sDefenceStat, speedStat, move1, move2, move3, move4);
+                    } else {
+                        newPoke = new Pokemon(name, type1, type2, healthStat, attackStat, defenceStat, sAttackStat, sDefenceStat, speedStat, move1, move2, move3, move4);
+                    }
+
+                //Create a new key and object value for the hashmap
+                    newDatabaseEntry.put(pokeNum, newPoke);
             }
 
-            newDatabaseEntry.put(pokeNum, newPoke);
-        }
+        //Return
+            return newDatabaseEntry;
+    }
 
-        return newDatabaseEntry;
+    /**
+     * This method will go through all the moves any pokemon can know
+     * @return a hashmap containing all moves
+     * @throws FileNotFoundException if file not found
+     */
+    public static HashMap<String, Move> importMoves() throws FileNotFoundException {
+        //Scanner for file
+            Scanner fileScan = new Scanner(new File("Somthing"));
+            fileScan.nextLine();
+
+        //Hashmap containing all moves used for pokemon in the dex
+            HashMap<String, Move> newMovesEntry = new HashMap<>();
+
+        //While loop to get all data from the moves file
+            while (fileScan.hasNext()) {
+
+                //Make a new scanner for each line in the file to scan individually with a comma delimiter
+                    String newLine=fileScan.nextLine();
+                    Scanner lineScan = new Scanner(newLine);
+                    lineScan.useDelimiter(",");
+
+                //Get the name of the move and the type the move is
+                    String moveName=lineScan.next();
+                    String typeOfMove=lineScan.next();
+
+                //Empty Move object
+                    Move tempMove;
+
+                //Decision statement for each type of move making a different kind of Move object
+                    if(typeOfMove.equalsIgnoreCase("Attack")) {
+                        //Get data for an attack move
+                            String type = lineScan.next();
+                            double accuracy=lineScan.nextDouble();
+                            int power = lineScan.nextInt();
+
+                        //Make the Move object
+                            tempMove=new AttackMove(moveName, accuracy, type, power);
+
+                    } else if(typeOfMove.equalsIgnoreCase("Status")){
+                        //Get data for a status move
+                            String type = lineScan.next();
+                            double accuracy=lineScan.nextDouble();
+                            String status=lineScan.next();
+                            double statusChance=lineScan.nextDouble();
+
+                        //Create a new Move
+                            tempMove=new StatusMove(moveName, accuracy, type, status, statusChance);
+
+                    } else {
+                        //Get data for a special
+                            String type = lineScan.next();
+                            double accuracy=lineScan.nextDouble();
+                            int power = lineScan.nextInt();
+                            String status=lineScan.next();
+                            double statusChance=lineScan.nextDouble();
+
+                        //Create a new Move
+                            tempMove=new SpecialMove(moveName, accuracy, type, status, statusChance, power);
+                    }
+
+                //Add entry into the hashmap
+                    newMovesEntry.put(moveName, tempMove);
+            }
+
+        //Return
+            return newMovesEntry;
     }
 
     /**
@@ -83,13 +174,15 @@ public class MainGame {
      * @return boolean
      */
     public static boolean playerWon(Pokemon player1, Pokemon player2){
-        if(player1.getCurrentHealth()<player1.getHealthStat()){
-            return true;
-        } else if(player2.getCurrentHealth()<player2.getHealthStat()){
-            return true;
-        } else {
-            return false;
-        }
+
+        //Decision statement to see if a player's pokemon has gone below its health stat
+            if(player1.getCurrentHealth()<player1.getHealthStat()){
+                return true;
+            } else if(player2.getCurrentHealth()<player2.getHealthStat()){
+                return true;
+            } else {
+                return false;
+            }
     }
 
     /**
@@ -99,57 +192,98 @@ public class MainGame {
         //Scanner for user input
             Scanner sc=new Scanner(System.in);
 
+        //Read in all the moves
+//            HashMap<String, Move> movesList=importMoves();
+
 
         //Main loop for the game
             while(!playerWon(player1, player2)){
-                System.out.print("What move does player 1 want to use? ");
+                System.out.println("What move does player 1 want to use? ");
+                System.out.println("Your moves are "+player1.getMove1()+", "+player1.getMove2()+", "+player1.getMove3()+", "+player1.getMove4());
                 String moveNameP1=sc.nextLine();
 
                 //TODO: make a system for the moves based on the names.
-                AttackMove move1=null;
+//                    Move move1= movesList.get(moveNameP1);
+                    Move move1=new AttackMove(moveNameP1,100,"Dark",100);
 
-                System.out.print("What move does player 2 want to use? ");
+                System.out.println("What move does player 2 want to use? ");
+                System.out.print("Your moves are "+player2.getMove1()+", "+player2.getMove2()+", "+player2.getMove3()+", "+player2.getMove4());
                 String moveNameP2=sc.nextLine();
 
                 //TODO: make a system for the moves based on the names.
-                AttackMove move2=null;
+//                    Move move2= movesList.get(moveNameP2);
+                Move move2=new AttackMove(moveNameP2,100,"Ice",50);
 
 
-                //Do damage to each other
-                    if(player1.getSpeedStat()>player2.getSpeedStat()){
-                        player2.setCurrentHealth(player2.calcDamage(move1, player1));
+                //Status effects do damage to each other
+                    player1.calcStatusDamage();
+                    player2.calcStatusDamage();
 
 
-                        if(!playerWon(player1,player2)) {
-                            player1.setCurrentHealth(player1.calcDamage(move2, player2));
-                        }
-                    } else {
-                        player1.setCurrentHealth(player1.calcDamage(move2, player2));
+                //Decision statement to see which player goes first
+                    if(player1.getSpeedStat()>player2.getSpeedStat()&&!playerWon(player1,player2)){
 
-                        if(!playerWon(player1,player2)) {
+                        //Player 1 has gone first so player 2 is dealt damage by player 1 first
                             player2.setCurrentHealth(player2.calcDamage(move1, player1));
+
+                        //Print statement to recognise that a player has taken damage
+                            System.out.println(player2.getName()+" took "+player2.calcDamage(move1, player1)+" damage\n");
+
+                        //Checking to make sure the damage done did not kill the other player, otherwise a dead pokemon would be able to do damage
+                            if(!playerWon(player1,player2)) {
+
+                                //Player 2 now deals damage
+                                    player1.setCurrentHealth(player1.calcDamage(move2, player2));
+
+                                //Print statement to recognise that a player has taken damage
+                                    System.out.println(player1.getName()+" took "+player1.calcDamage(move1, player1)+" damage\n");
+                            }
+                    } else if (player2.getSpeedStat()>player1.getSpeedStat()&&!playerWon(player1,player2)) {
+
+                        //Player 2 has gone first so player 1 is dealt damage by player 2 first
+                            player1.setCurrentHealth(player1.calcDamage(move2, player2));
+
+                        //Print statement to recognise that a player has taken damage
+                            System.out.println(player1.getName()+" took "+player1.calcDamage(move1, player1)+" damage\n");
+
+
+                        if(!playerWon(player1,player2)) {
+
+                            //Player 1 now deals damage
+                                player2.setCurrentHealth(player2.calcDamage(move1, player1));
+
+                            //Print statement to recognise that a player has taken damage
+                                System.out.println(player2.getName()+" took "+player2.calcDamage(move1, player1)+" damage\n");
+
                         }
                     }
 
-
+                //Reset stats as to not have stacking effects of stats
+                    player1.statusReset();
+                    player2.statusReset();
             }
     }
 
-    public static int conditionDamage(Pokemon mon, StatusMove moveUsed) {
-        if (!mon.getStatus().equals("none")) {
-            return 1;
-        } else {
-            //See if the effect triggers
-            Random rn = new Random();
-            int trigger = rn.nextInt(100);
-
-            //Decision statement to see if it triggers
-            if (trigger > moveUsed.getStatusChance()) {
-                mon.setStatus(moveUsed.getStatus());
-                return 1;
+    /**
+     * This method will see if a pokemon will get effected my a status effect
+     * @param mon pokemon potentially being effected
+     * @param moveUsed move that was used to deal and effect
+     */
+    public static void conditionCheck(Pokemon mon, StatusMove moveUsed) {
+        //Decision statement to see if the pokemon even needs to have an effect done to him
+            if (!mon.getStatus().equals("none")) {
+                mon.setStatus("none");
             } else {
-                return 0;
+                //See if the effect triggers
+                    Random rn = new Random();
+                    int trigger = rn.nextInt(100);
+
+                //Decision statement to see if an effect it triggers
+                    if (trigger > moveUsed.getStatusChance()) {
+                        mon.setStatus(moveUsed.getStatus());
+                    } else {
+                        mon.setStatus("none");
+                    }
             }
-        }
     }
 }

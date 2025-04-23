@@ -14,47 +14,77 @@ import java.util.Scanner;
  */
 
 public class Pokemon {
-    //Variables
-        private String name;
+    //Name, typing and status
+        private final String name;
         private ArrayList<String> types=new ArrayList<>();
-        private String type1;
-        private String type2;
+        private final String type1;
+        private final String type2;
         private String status="none";
+
+    //Current stats that may and can change
         private int currentHealth;
-        private int healthStat;
-        private int attackStat;
-        private int defenceStat;
-        private int specialAttackStat;
-        private int specialDefenceStat;
-        private int speedStat;
+        private int currentSpeed;
+        private int currentAttack;
+        private int currentSpecialAttack;
+
+    //Stats of the pokemon that will not change
+        private final int healthStat;
+        private final int attackStat;
+        private final int defenceStat;
+        private final int specialAttackStat;
+        private final int specialDefenceStat;
+        private final int speedStat;
+
+    //Moves of the pokemon
+        private final String move1;
+        private final String move2;
+        private final String move3;
+        private final String move4;
 
     /**
-     * Constructor for the class
+     * Constructor for the class with only one type
      */
-    public Pokemon(String name, String type1, int currentHealth, int healthStat, int attackStat, int defenceStat, int specialAttackStat, int specialDefenceStat, int speedStat){
+    public Pokemon(String name, String type1, int healthStat, int attackStat, int defenceStat, int specialAttackStat, int specialDefenceStat, int speedStat, String move1, String move2, String move3, String move4){
         this.name=name;
         this.type1=type1;
         type2=null;
-        this.currentHealth=currentHealth;
+        this.currentHealth=healthStat;
         this.healthStat=healthStat;
+        this.currentAttack=attackStat;
         this.attackStat=attackStat;
         this.defenceStat=defenceStat;
+        this.currentSpecialAttack=specialAttackStat;
         this.specialAttackStat=specialAttackStat;
         this.specialDefenceStat=specialDefenceStat;
+        this.currentSpeed=speedStat;
         this.speedStat=speedStat;
+        this.move1=move1;
+        this.move2=move2;
+        this.move3=move3;
+        this.move4=move4;
     }
 
-    public Pokemon(String name, String type1, String type2, int currentHealth, int healthStat, int attackStat, int defenceStat, int specialAttackStat, int specialDefenceStat, int speedStat){
+    /**
+     * constructor for a pokemon with 2 types
+     */
+    public Pokemon(String name, String type1, String type2, int healthStat, int attackStat, int defenceStat, int specialAttackStat, int specialDefenceStat, int speedStat, String move1, String move2, String move3, String move4){
         this.name=name;
         this.type1=type1;
         this.type2=type2;
-        this.currentHealth=currentHealth;
+        this.currentHealth=healthStat;
         this.healthStat=healthStat;
+        this.currentAttack=attackStat;
         this.attackStat=attackStat;
         this.defenceStat=defenceStat;
+        this.currentSpecialAttack=specialAttackStat;
         this.specialAttackStat=specialAttackStat;
         this.specialDefenceStat=specialDefenceStat;
+        this.currentSpeed=speedStat;
         this.speedStat=speedStat;
+        this.move1=move1;
+        this.move2=move2;
+        this.move3=move3;
+        this.move4=move4;
     }
 
     /**
@@ -81,18 +111,34 @@ public class Pokemon {
         return types;
     }
 
+    /**
+     * gets the first type of the pokemon
+     * @return the first type
+     */
     public String getType1(){
         return type1;
     }
 
+    /**
+     * gets the second type of the pokemon
+     * @return the second type
+     */
     public String getType2(){
         return type2;
     }
 
+    /**
+     * returns the status of the pokemon
+     * @return status of pokemon
+     */
     public String getStatus(){
         return status;
     }
 
+    /**
+     * sets the status to the parameter given
+     * @param s string containing the status
+     */
     public void setStatus(String s){
         status=s;
     }
@@ -105,7 +151,19 @@ public class Pokemon {
         return currentHealth;
     }
 
-    public void setCurrentHealth(int damage){
+    /**
+     * sets the current health to the parameter
+     * @param other int
+     */
+    public void setCurrentHealth(int other){
+        currentHealth=other;
+    }
+
+    /**
+     * deals damage to the pokemon by subtracting the current health from the parameter
+     * @param damage int
+     */
+    public void dealDamage(int damage){
         currentHealth=currentHealth-damage;
     }
 
@@ -115,6 +173,22 @@ public class Pokemon {
      */
     public int getHealthStat(){
         return healthStat;
+    }
+
+    /**
+     * returns the current attack of the pokemon
+     * @return the current attack
+     */
+    public int getCurrentAttack(){
+        return currentAttack;
+    }
+
+    /**
+     * sets the current attack to the parameter
+     * @param other int
+     */
+    public void setCurrentAttack(int other){
+        currentAttack=other;
     }
 
     /**
@@ -134,6 +208,22 @@ public class Pokemon {
     }
 
     /**
+     * Returns the current special attack value
+     * @return currentSpecialAttack
+     */
+    public int getCurrentSpecialAttack(){
+        return currentSpecialAttack;
+    }
+
+    /**
+     * sets the special attack the parameter
+     * @param other int
+     */
+    public void setCurrentSpecialAttack(int other){
+        currentSpecialAttack=other;
+    }
+
+    /**
      * Returns the Special Damage stat for the pokemon
      * @return int
      */
@@ -150,6 +240,22 @@ public class Pokemon {
     }
 
     /**
+     * Returns the current speed
+     * @return the current speed
+     */
+    public int getCurrentSpeed(){
+        return currentSpeed;
+    }
+
+    /**
+     * sets the current speed to the parameter
+     * @param other int
+     */
+    public void setCurrentSpeed(int other){
+        currentSpeed=other;
+    }
+
+    /**
      * Returns the Speed stat for the pokemon
      * @return int
      */
@@ -158,111 +264,306 @@ public class Pokemon {
     }
 
     /**
+     * Returns move 1
+     * @return string
+     */
+    public String getMove1(){
+        return move1;
+    }
+
+    /**
+     * Returns move 2
+     * @return string
+     */
+    public String getMove2(){
+        return move2;
+    }
+
+    /**
+     * Returns move 3
+     * @return string
+     */
+    public String getMove3(){
+        return move3;
+    }
+
+    /**
+     * Returns move 4
+     * @return string
+     */
+    public String getMove4(){
+        return move4;
+    }
+
+    /**
      * Method to calculate damage using the generation one formula for damage calculation.
      */
-    public int calcDamage(AttackMove moveUsed, Pokemon other) throws FileNotFoundException {
-        int damage;
-        double STAB = 0;
-        int crit;
-        boolean critMade=false;
-        boolean sameType = false;
-        double type1Effect;
-        double type2Effect;
-        
-        type1Effect=getTypeEffect(moveUsed.getType(), other.getType1());
-        try {
-            type2Effect = getTypeEffect(moveUsed.getType(), other.getType2());
-        } catch (Exception e){
-            type2Effect=1;
-        }
+    public int calcDamage(Move moveUsed, Pokemon other) throws FileNotFoundException {
+        //Decision statement for each move type
+            if (moveUsed.getTypeOfMove().equalsIgnoreCase("Attack")) {
+                //Make the move
+                    AttackMove damageMove=(AttackMove)moveUsed;
 
-        Random rn=new Random();
+                //Variables that control damage modifiers
+                    int damage;
+                    double STAB = 0;
+                    int crit;
+                    boolean critMade = false;
+                    boolean sameType = false;
+                    double type1Effect;
+                    double type2Effect;
 
-        //Calculation for STAB
-            for(int i=0;i<types.size();i++){
-                if(moveUsed.getType().equalsIgnoreCase(types.get(i))&& !sameType){
-                    STAB=1.5;
-                    sameType=true;
-                } else {
-                    STAB=1.0;
+                //Get the type effects
+                    type1Effect = getTypeEffect(damageMove.getType(), other.getType1());
+                    try {
+                        type2Effect = getTypeEffect(damageMove.getType(), other.getType2());
+                    } catch (Exception e) {
+                        type2Effect = 1;
+                    }
+
+                //Random
+                    Random rn = new Random();
+
+                //Calculation for STAB
+                    for (int i = 0; i < types.size(); i++) {
+                        if (damageMove.getType().equalsIgnoreCase(types.get(i)) && !sameType) {
+                            STAB = 1.5;
+                            sameType = true;
+                        } else {
+                            STAB = 1.0;
+                        }
+                    }
+
+                //Calculation for crit
+                    int threshold = getSpeedStat() / 2;
+
+                    if (rn.nextInt(255) < threshold) {
+                        critMade = true;
+                        crit = 2;
+                    } else {
+                        crit = 1;
+                    }
+
+                //Calculation for damage
+                    damage = (int) (((double) (((2 * 100 * crit) / 5 + 2) * damageMove.getPower() * (this.getAttackStat() / other.getDefenceStat())) / 50 + 2) * STAB * (rn.nextInt(255 - 217 + 1) - 217) / 255 * type1Effect * type2Effect);
+
+                //Recognition for a crit
+                    if (critMade) {
+                        System.out.println("You got a crit!");
+                    }
+
+                return damage;
+            } else if (moveUsed.getTypeOfMove().equalsIgnoreCase("Special")) {
+                SpecialMove damageMove=(SpecialMove)moveUsed;
+
+                //Variables that control damage modifiers
+                int damage;
+                double STAB = 0;
+                int crit;
+                boolean critMade = false;
+                boolean sameType = false;
+                double type1Effect;
+                double type2Effect;
+
+                //Get the type effects
+                type1Effect = getTypeEffect(damageMove.getType(), other.getType1());
+                try {
+                    type2Effect = getTypeEffect(damageMove.getType(), other.getType2());
+                } catch (Exception e) {
+                    type2Effect = 1;
                 }
+
+                //Random
+                Random rn = new Random();
+
+                //Calculation for STAB
+                for (int i = 0; i < types.size(); i++) {
+                    if (damageMove.getType().equalsIgnoreCase(types.get(i)) && !sameType) {
+                        STAB = 1.5;
+                        sameType = true;
+                    } else {
+                        STAB = 1.0;
+                    }
+                }
+
+                //Calculation for crit
+                    int threshold = getSpeedStat() / 2;
+
+                    if (rn.nextInt(255) < threshold) {
+                        critMade = true;
+                        crit = 2;
+                    } else {
+                        crit = 1;
+                    }
+
+                //Calculation for damage
+                    damage = (int) (((double) (((2 * 100 * crit) / 5 + 2) * damageMove.getPower() * (this.getAttackStat() / other.getDefenceStat())) / 50 + 2) * STAB * (rn.nextInt(255 - 217 + 1) - 217) / 255 * type1Effect * type2Effect);
+
+                //Recognition for a crit
+                    if (critMade) {
+                        System.out.println("You got a crit!");
+                    }
+
+                //Return
+                    return damage;
             }
 
-        //Calculation for crit
-            int threshold = getSpeedStat()/2;
-
-            if(rn.nextInt(255)<threshold){
-                critMade=true;
-                crit=2;
-            } else {
-                crit=1;
-            }
-
-        damage= (int) (((double) (((2 * 100 * crit) / 5 + 2) * moveUsed.getPower() * (this.getAttackStat() / other.getDefenceStat())) /50+2)*STAB*(rn.nextInt(255-217+1)-217)/255*type1Effect*type2Effect);
-
-        if(critMade) {
-            System.out.println("You got a crit!");
-        }
-
-        return damage;
+        //Return
+            return 0;
     }
-    
-    public double getTypeEffect(String moveType, String pokemonType) throws FileNotFoundException {
-        Scanner weaknessScan=new Scanner(new File("WeaknessChart.csv"));
 
-        //2d arraylist for comparing the types
-            ArrayList<ArrayList<String>> typeChart =new ArrayList<>();
+    /**
+     * Methdo that calculates the damage and effects that status may do
+     */
+    public void calcStatusDamage(){
 
-            while(weaknessScan.hasNextLine()){
-                ArrayList<String> row=new ArrayList<>();
+        //Decision statement for each of the 5 statuses
+            if(getStatus().equalsIgnoreCase("Poisoned")){
 
-                String line=weaknessScan.nextLine();
+                //Decreases health by an eighth of the maximum
+                    dealDamage(getHealthStat()*(1/8));
+            } else if(getStatus().equalsIgnoreCase("Burned")){
 
-                Scanner lineScan=new Scanner(line);
-                lineScan.useDelimiter(",");
+                //Decreases health by a 1/16 of the maximum
+                    dealDamage(getHealthStat()*(1/16));
 
-                for(int i=0;lineScan.hasNext();i++){
-                    row.add(lineScan.next());
-                }
+                //Sets attack stat to half of what it was
+                    setCurrentAttack(attackStat/2);
 
-                typeChart.add(row);
+            } else if(getStatus().equalsIgnoreCase("Freezed")){
+
+                //In the real game an attack would not have occured, instead we just set the attack to zero
+                    setCurrentAttack(0);
+                    setCurrentSpecialAttack(0);
+            } else if(getStatus().equalsIgnoreCase("Paralysised")){
+
+                //Reduces speed by 1/4
+                    setCurrentSpeed(speedStat*(1/4));
+
+                //Random
+                    Random rn=new Random();
+
+                //See if the pokemon is stuned
+                    int stun=rn.nextInt(100);
+
+                    if(stun>75){
+                        //In the real game an attack would not have occured, instead we just set the attack to zero
+                            setCurrentAttack(0);
+                            setCurrentSpecialAttack(0);
+                    }
+            } else if(getStatus().equalsIgnoreCase("Sleeped")){
+                //Random
+                    Random rn=new Random();
+
+                //See if the pokemon is stunned
+                    int stun=rn.nextInt(100);
+
+                    if(stun>75){
+                        //In the real game an attack would not have occured, instead we just set the attack to zero
+                            setCurrentAttack(0);
+                            setCurrentSpecialAttack(0);
+
+                        //Sleep ends after this effect
+                            setStatus("none");
+                    }
             }
-
-
-        //Get the value
-            int moveTypeNum=0;
-
-            for(int i=0;i<typeChart.size();i++){
-                ArrayList<String> temp = typeChart.get(i);
-                if(temp.get(1).equalsIgnoreCase(moveType)){
-                    moveTypeNum=i;
-                }
-            }
-
-            int pokeTypeNum=0;
-            ArrayList<String> firstRow=typeChart.get(1);
-
-            for(int i=0;i<firstRow.size();i++){
-                if(firstRow.get(i).equalsIgnoreCase(pokemonType)){
-                    pokeTypeNum=i;
-                }
-            }
-
-
-        //Get number
-            double multNum=1;
-            ArrayList<String> temp=typeChart.get(pokeTypeNum);
-            String multStr=temp.get(pokeTypeNum);
-
-            if(multStr.equalsIgnoreCase("0x")){
-                multNum=0;
-            } else if(multStr.equalsIgnoreCase("1/2x")){
-                multNum= 0.5;
-            } else if(multStr.equalsIgnoreCase("2x")){
-                multNum=2;
-            }
-
-            return multNum;
-
     }
+
+    /**
+     * Resets everything changed in the last method
+     */
+    public void statusReset(){
+
+        if(getStatus().equalsIgnoreCase("Burned")){
+            setCurrentAttack(attackStat);
+        } else if(getStatus().equalsIgnoreCase("Freezed")){
+            setCurrentAttack(currentAttack);
+            setCurrentSpecialAttack(currentSpecialAttack);
+        } else if(getStatus().equalsIgnoreCase("Paralysised")){
+            setCurrentSpeed(speedStat);
+            setCurrentAttack(attackStat);
+            setCurrentSpecialAttack(specialAttackStat);
+        } else if(getStatus().equalsIgnoreCase("Sleeped")){
+            setCurrentAttack(attackStat);
+            setCurrentSpecialAttack(specialAttackStat);
+        }
+    }
+
+    /**
+     * This method will get the type match-up for the move and pokemon
+     * @param moveType type of the move used
+     * @param pokemonType type of the pokemon
+     * @return the multiplier
+     * @throws FileNotFoundException if the file cannot be found
+     */
+        public double getTypeEffect(String moveType, String pokemonType) throws FileNotFoundException {
+            //Scanner for the file
+                Scanner weaknessScan=new Scanner(new File("WeaknessChart.csv"));
+
+            //2d arraylist for comparing the types
+                ArrayList<ArrayList<String>> typeChart =new ArrayList<>();
+
+                //While loop to run through the file
+                    while(weaknessScan.hasNextLine()){
+                        //Arraylist for every single row
+                            ArrayList<String> row=new ArrayList<>();
+
+                        //read the whole line
+                            String line=weaknessScan.nextLine();
+
+                        //Make a scanner for the line
+                            Scanner lineScan=new Scanner(line);
+                            lineScan.useDelimiter(",");
+
+                        //For loop to go through and add each value from in the whole row
+                            for(int i=0;lineScan.hasNext();i++){
+                                row.add(lineScan.next());
+                            }
+
+                        //Add to the larger arraylist
+                            typeChart.add(row);
+                    }
+
+
+            //Get the value
+                int moveTypeNum=0;
+
+            //For loop to go through and find the value that matches the type
+                for(int i=0;i<typeChart.size();i++){
+
+                    //First value is the string type
+                        if(typeChart.get(i).getFirst().equalsIgnoreCase(moveType)){
+                            moveTypeNum=i;
+                        }
+                }
+
+                //Get the type of the pokemon on the chart
+                    int pokeTypeNum=0;
+                    ArrayList<String> firstRow=typeChart.get(1);
+
+                    for(int i=0;i<firstRow.size();i++){
+                        if(firstRow.get(i).equalsIgnoreCase(pokemonType)){
+                            pokeTypeNum=i;
+                        }
+                    }
+
+
+                //Get the mutlipler by comparing both values to create a 2d coordinate
+                    double multNum=1;
+                    ArrayList<String> temp=typeChart.get(pokeTypeNum);
+                    String multStr=temp.get(pokeTypeNum);
+
+                //Decision statement to see what multiplier it is
+                    if(multStr.equalsIgnoreCase("0x")){
+                        multNum=0;
+                    } else if(multStr.equalsIgnoreCase("1/2x")){
+                        multNum= 0.5;
+                    } else if(multStr.equalsIgnoreCase("2x")){
+                        multNum=2;
+                    }
+
+                //Return
+                    return multNum;
+
+        }
 }
