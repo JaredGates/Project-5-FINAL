@@ -27,7 +27,7 @@ public class Pokemon {
         private int currentAttack;
         private int currentSpecialAttack;
 
-    //Stats of the pokemon that will not change
+    //Stats of the Pokémon that will not change
         private final int healthStat;
         private final int attackStat;
         private final int defenceStat;
@@ -35,7 +35,7 @@ public class Pokemon {
         private final int specialDefenceStat;
         private final int speedStat;
 
-    //Moves of the pokemon
+    //Moves of the Pokémon
         private final String move1;
         private final String move2;
         private final String move3;
@@ -65,7 +65,7 @@ public class Pokemon {
     }
 
     /**
-     * constructor for a pokemon with 2 types
+     * constructor for a Pokémon with 2 types
      */
     public Pokemon(String name, String type1, String type2, int healthStat, int attackStat, int defenceStat, int specialAttackStat, int specialDefenceStat, int speedStat, String move1, String move2, String move3, String move4){
         this.name=name;
@@ -88,7 +88,7 @@ public class Pokemon {
     }
 
     /**
-     * Gets the name of the pokemon
+     * Gets the name of the Pokémon
      * @return string of name
      */
     public String getName(){
@@ -96,9 +96,9 @@ public class Pokemon {
     }
 
     /**
-     * returns the typing of the pokemon
-     * @param numTypes which indicates the potential typing of the pokemon
-     * @return a list that contains all the typing of the pokemon
+     * returns the typing of the Pokémon
+     * @param numTypes which indicates the potential typing of the Pokémon
+     * @return a list that contains all the typing of the Pokémon
      */
     public ArrayList<String> getTypes(int numTypes){
         if(numTypes==1){
@@ -112,7 +112,7 @@ public class Pokemon {
     }
 
     /**
-     * gets the first type of the pokemon
+     * gets the first type of the Pokémon
      * @return the first type
      */
     public String getType1(){
@@ -120,7 +120,7 @@ public class Pokemon {
     }
 
     /**
-     * gets the second type of the pokemon
+     * gets the second type of the Pokémon
      * @return the second type
      */
     public String getType2(){
@@ -128,7 +128,7 @@ public class Pokemon {
     }
 
     /**
-     * returns the status of the pokemon
+     * returns the status of the Pokémon
      * @return status of pokemon
      */
     public String getStatus(){
@@ -144,7 +144,7 @@ public class Pokemon {
     }
 
     /**
-     * Returns the current health of the pokemon
+     * Returns the current health of the Pokémon
      * @return integer
      */
     public int getCurrentHealth(){
@@ -160,7 +160,7 @@ public class Pokemon {
     }
 
     /**
-     * deals damage to the pokemon by subtracting the current health from the parameter
+     * deals damage to the Pokémon by subtracting the current health from the parameter
      * @param damage int
      */
     public void dealDamage(int damage){
@@ -168,7 +168,7 @@ public class Pokemon {
     }
 
     /**
-     * Returns the Health stat of the pokemon which is also used as the max health of the pokemon
+     * Returns the Health stat of the Pokémon which is also used as the max health of the Pokémon
      * @return integer
      */
     public int getHealthStat(){
@@ -176,7 +176,7 @@ public class Pokemon {
     }
 
     /**
-     * returns the current attack of the pokemon
+     * returns the current attack of the Pokémon
      * @return the current attack
      */
     public int getCurrentAttack(){
@@ -192,7 +192,7 @@ public class Pokemon {
     }
 
     /**
-     * Returns the Damage stat for the pokemon
+     * Returns the Damage stat for the Pokémon
      * @return int
      */
     public int getAttackStat(){
@@ -200,7 +200,7 @@ public class Pokemon {
     }
 
     /**
-     * Returns the Defence stat for the pokemon
+     * Returns the Defence stat for the Pokémon
      * @return int
      */
     public int getDefenceStat(){
@@ -224,7 +224,7 @@ public class Pokemon {
     }
 
     /**
-     * Returns the Special Damage stat for the pokemon
+     * Returns the Special Damage stat for the Pokémon
      * @return int
      */
     public int getSAttackStat(){
@@ -232,7 +232,7 @@ public class Pokemon {
     }
 
     /**
-     * Returns the Special Defence stat for the pokemon
+     * Returns the Special Defence stat for the Pokémon
      * @return int
      */
     public int getSDefenceStat(){
@@ -256,7 +256,7 @@ public class Pokemon {
     }
 
     /**
-     * Returns the Speed stat for the pokemon
+     * Returns the Speed stat for the Pokémon
      * @return int
      */
     public int getSpeedStat(){
@@ -445,60 +445,88 @@ public class Pokemon {
     }
 
     /**
-     * Methdo that calculates the damage and effects that status may do
+     * Method that calculates the damage and effects that status may do
      */
     public void calcStatusDamage(){
 
         //Decision statement for each of the 5 statuses
-            if(getStatus().equalsIgnoreCase("Poisoned")){
+//            if(getStatus().equalsIgnoreCase("Poisoned")){
+//
+//                //Decreases health by an eighth of the maximum
+//                    dealDamage((int) (getHealthStat()*(1.0/8)));
+//            } else if(getStatus().equalsIgnoreCase("Burned")){
+//
+//                //Decreases health by a 1/16 of the maximum
+//                    dealDamage((int) (getHealthStat()*(1.0/16)));
+//
+//                //Sets attack stat to half of what it was
+//                    setCurrentAttack(attackStat/2);
+//
+//            } else if(getStatus().equalsIgnoreCase("Frozen")){
+//
+//                //In the real game an attack would not have occurred, instead we just set the attack to zero
+//                    setCurrentAttack(0);
+//                    setCurrentSpecialAttack(0);
+//            } else if(getStatus().equalsIgnoreCase("Paralyzed")){
+//
+//                //Reduces speed by 1/4
+//                    setCurrentSpeed((int) (speedStat*(1.0/4)));
+//
+//                //Random
+//                    Random rn=new Random();
+//
+//                //See if the Pokémon is stuned
+//                    int stun=rn.nextInt(100);
+//
+//                    if(stun>75){
+//                        //In the real game an attack would not have occurred, instead we just set the attack to zero
+//                            setCurrentAttack(0);
+//                            setCurrentSpecialAttack(0);
+//                    }
+//            } else if(getStatus().equalsIgnoreCase("Asleep")){
+//                //Random
+//                    Random rn=new Random();
+//
+//                //See if the Pokémon is stunned
+//                    int stun=rn.nextInt(100);
+//
+//                    if(stun>75){
+//                        //In the real game an attack would not have occurred, instead we just set the attack to zero
+//                            setCurrentAttack(0);
+//                            setCurrentSpecialAttack(0);
+//
+//                        //Sleep ends after this effect
+//                            setStatus("none");
+//                    }
+//            }
 
-                //Decreases health by an eighth of the maximum
-                    dealDamage(getHealthStat()*(1/8));
-            } else if(getStatus().equalsIgnoreCase("Burned")){
-
-                //Decreases health by a 1/16 of the maximum
-                    dealDamage(getHealthStat()*(1/16));
-
-                //Sets attack stat to half of what it was
-                    setCurrentAttack(attackStat/2);
-
-            } else if(getStatus().equalsIgnoreCase("Freezed")){
-
-                //In the real game an attack would not have occured, instead we just set the attack to zero
+        // Adjusted calcStatusDamage() to be a switch statement for better presentation
+        // and easier access.
+        switch (status){
+            case "Poisoned" -> dealDamage(healthStat / 8);
+            case "Burned" -> {
+                dealDamage(healthStat / 16);
+                setCurrentAttack(attackStat / 2);
+            }
+            case "Frozen" -> {
+                setCurrentAttack(0);
+                setCurrentSpecialAttack(0);
+            }
+            case "Paralyzed" -> {
+                setCurrentSpeed(speedStat / 4);
+                if (new Random().nextInt(100) > 75){
                     setCurrentAttack(0);
                     setCurrentSpecialAttack(0);
-            } else if(getStatus().equalsIgnoreCase("Paralysised")){
-
-                //Reduces speed by 1/4
-                    setCurrentSpeed(speedStat*(1/4));
-
-                //Random
-                    Random rn=new Random();
-
-                //See if the pokemon is stuned
-                    int stun=rn.nextInt(100);
-
-                    if(stun>75){
-                        //In the real game an attack would not have occured, instead we just set the attack to zero
-                            setCurrentAttack(0);
-                            setCurrentSpecialAttack(0);
-                    }
-            } else if(getStatus().equalsIgnoreCase("Sleeped")){
-                //Random
-                    Random rn=new Random();
-
-                //See if the pokemon is stunned
-                    int stun=rn.nextInt(100);
-
-                    if(stun>75){
-                        //In the real game an attack would not have occured, instead we just set the attack to zero
-                            setCurrentAttack(0);
-                            setCurrentSpecialAttack(0);
-
-                        //Sleep ends after this effect
-                            setStatus("none");
-                    }
+                }
             }
+            case "Asleep" -> {
+                if (new Random().nextInt(100) > 75){
+                    setCurrentAttack(0);
+                    setCurrentSpecialAttack(0);
+                    setStatus("none");
+                }
+            }
+        }
     }
 
     /**
@@ -506,25 +534,30 @@ public class Pokemon {
      */
     public void statusReset(){
 
-        if(getStatus().equalsIgnoreCase("Burned")){
-            setCurrentAttack(attackStat);
-        } else if(getStatus().equalsIgnoreCase("Freezed")){
-            setCurrentAttack(currentAttack);
-            setCurrentSpecialAttack(currentSpecialAttack);
-        } else if(getStatus().equalsIgnoreCase("Paralysised")){
-            setCurrentSpeed(speedStat);
-            setCurrentAttack(attackStat);
-            setCurrentSpecialAttack(specialAttackStat);
-        } else if(getStatus().equalsIgnoreCase("Sleeped")){
-            setCurrentAttack(attackStat);
-            setCurrentSpecialAttack(specialAttackStat);
-        }
+//        if(getStatus().equalsIgnoreCase("Burned")){
+//            setCurrentAttack(attackStat);
+//        } else if(getStatus().equalsIgnoreCase("Frozen")){
+//            setCurrentAttack(currentAttack);
+//            setCurrentSpecialAttack(currentSpecialAttack);
+//        } else if(getStatus().equalsIgnoreCase("Paralyzed")){
+//            setCurrentSpeed(speedStat);
+//            setCurrentAttack(attackStat);
+//            setCurrentSpecialAttack(specialAttackStat);
+//        } else if(getStatus().equalsIgnoreCase("Asleep")){
+//            setCurrentAttack(attackStat);
+//            setCurrentSpecialAttack(specialAttackStat);
+//        }
+
+        // Explicitly reverses stat changes
+        currentAttack = attackStat;
+        currentSpecialAttack = specialAttackStat;
+        currentSpeed = speedStat;
     }
 
     /**
-     * This method will get the type match-up for the move and pokemon
+     * This method will get the type match-up for the move and Pokémon
      * @param moveType type of the move used
-     * @param pokemonType type of the pokemon
+     * @param pokemonType type of the Pokémon
      * @return the multiplier
      * @throws FileNotFoundException if the file cannot be found
      */
@@ -569,7 +602,7 @@ public class Pokemon {
                         }
                 }
 
-                //Get the type of the pokemon on the chart
+                //Get the type of the Pokémon on the chart
                     int pokeTypeNum=0;
                     ArrayList<String> firstRow=typeChart.get(1);
 
@@ -580,7 +613,7 @@ public class Pokemon {
                     }
 
 
-                //Get the mutlipler by comparing both values to create a 2d coordinate
+                //Get the multiplier by comparing both values to create a 2d coordinate
                     double multNum=1;
                     ArrayList<String> temp=typeChart.get(pokeTypeNum+1);
                     String multStr=temp.get(pokeTypeNum+1);

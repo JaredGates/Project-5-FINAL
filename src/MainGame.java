@@ -8,9 +8,9 @@ import static java.lang.Integer.parseInt;
 
 /**
  * This main class houses the majority of the code as it runs through the game loop until a player has lost.
- * The class will take in a cvs file and generate two random pokemon from that list to put into the game.
+ * The class will take in a cvs file and generate two random Pokémon from that list to put into the game.
  * Then it will ask the player if they would like to start a game, doing so will put them into the main game
- * loop. The players will go back and forth until one pokemon faints.
+ * loop. The players will go back and forth until one Pokémon faints.
  */
 
 public class MainGame {
@@ -25,11 +25,11 @@ public class MainGame {
             int PokeRandomNum1=126;//rn.nextInt(1, database.size()+1);
             int PokeRandomNum2=133;//rn.nextInt(1, database.size()+1);
 
-        //Create the two pokemon based on the numbers gotten from the random number
+        //Create the two Pokémon based on the numbers gotten from the random number
             Pokemon Poke1=database.get(PokeRandomNum1);
             Pokemon Poke2=database.get(PokeRandomNum2);
 
-            System.out.println("Player 1 has gotten the pokemon: "+Poke1.getName()+" (DEX# " +PokeRandomNum1+")");
+            System.out.println("Player 1 has gotten the Pokémon: "+Poke1.getName()+" (DEX# " +PokeRandomNum1+")");
 
             if(Poke1.getType2() == null){
                 System.out.println("Its type(s) are"+Poke1.getType1());
@@ -38,7 +38,7 @@ public class MainGame {
             }
 
 
-            System.out.println("Player 2 has gotten the pokemon: "+Poke2.getName()+" (DEX# " +PokeRandomNum2+")");
+            System.out.println("Player 2 has gotten the Pokémon: "+Poke2.getName()+" (DEX# " +PokeRandomNum2+")");
 
             if(Poke2.getType2() == null){
                 System.out.println("Its type(s) are"+Poke2.getType1());
@@ -54,8 +54,8 @@ public class MainGame {
     }
 
     /**
-     * This method will go through the CSV file provided (or potentially one made) and put all pokemon from it into a hashmap
-     * @return a hashmap with a integer key and Pokemon value
+     * This method will go through the CSV file provided (or potentially one made) and put all Pokémon from it into a hashmap
+     * @return a hashmap with an integer key and Pokémon value
      * @throws FileNotFoundException if file not found
      */
     public static HashMap<Integer, Pokemon> importCSVFile() throws FileNotFoundException {
@@ -65,11 +65,11 @@ public class MainGame {
         //Read in the blank line at the beginning
             fileScan.nextLine();
 
-        //HashMap to get all the pokemon into a hashmap to be returned, keys are the pokedex entries
+        //HashMap to get all the Pokémon into a hashmap to be returned, keys are the Pokédex entries
             HashMap<Integer, Pokemon> newDatabaseEntry = new HashMap<>();
 
 
-        //While loop to read in each line of the CSV file and get each of the pokemon's stats
+        //While loop to read in each line of the CSV file and get each of the Pokémon's stats
             while (fileScan.hasNext()) {
 
                 //Create another scanner that reads each line using a delimiter of a comma due to the CSV format
@@ -77,11 +77,11 @@ public class MainGame {
                     Scanner lineScan = new Scanner(newLine);
                     lineScan.useDelimiter(",");
 
-                //Reads in the first value which is its pokedex entry, this will be the key
+                //Reads in the first value which is its Pokédex entry, this will be the key
                     int pokeNum = parseInt(lineScan.next());
                     Pokemon newPoke;
 
-                //Read in each of the stats of the pokemon
+                //Read in each of the stats of the Pokémon
                     String name = lineScan.next();
                     String type1 = lineScan.next();
                     String type2 = lineScan.next();
@@ -102,7 +102,7 @@ public class MainGame {
                     String move3="Status";
                     String move4="Protection";
 
-                //Create a pokemon object, depending on if type2 was null there will be a different object created
+                //Create a Pokémon object, depending on if type2 was null there will be a different object created
                     if (type2 == null) {
                         newPoke = new Pokemon(name, type1, healthStat, attackStat, defenceStat, sAttackStat, sDefenceStat, speedStat, move1, move2, move3, move4);
                     } else {
@@ -118,7 +118,7 @@ public class MainGame {
     }
 
     /**
-     * This method will go through all the moves any pokemon can know
+     * This method will go through all the moves any Pokémon can know
      * @return a hashmap containing all moves
      * @throws FileNotFoundException if file not found
      */
@@ -127,7 +127,7 @@ public class MainGame {
             Scanner fileScan = new Scanner(new File("Something"));
             fileScan.nextLine();
 
-        //Hashmap containing all moves used for pokemon in the dex
+        //Hashmap containing all moves used for Pokémon in the dex
             HashMap<String, Move> newMovesEntry = new HashMap<>();
 
         //While loop to get all data from the moves file
@@ -192,7 +192,7 @@ public class MainGame {
      */
     public static boolean playerWon(Pokemon player1, Pokemon player2){
 
-        //Decision statement to see if a player's pokemon has gone below its health stat
+        //Decision statement to see if a player's Pokémon has gone below its health stat
             if(player1.getCurrentHealth()<0){
                 return true;
             } else if(player2.getCurrentHealth()<0){
@@ -259,11 +259,11 @@ public class MainGame {
                         } else if(statusNum==1){
                             status="Burned";
                         } else if(statusNum==2){
-                            status="Sleeped";
+                            status="Asleep";
                         } else if(statusNum==3){
-                            status="Freezed";
+                            status="Frozen";
                         } else if(statusNum==4){
-                            status="Paralysised";
+                            status="Paralyzed";
                         }
 
                         move1=new SpecialMove(moveNameP1,70,player1.getType1(),status,25, 70);
@@ -275,11 +275,11 @@ public class MainGame {
                         } else if(statusNum==1){
                             status="Burned";
                         } else if(statusNum==2){
-                            status="Sleeped";
+                            status="Asleep";
                         } else if(statusNum==3){
-                            status="Freezed";
+                            status="Frozen";
                         } else if(statusNum==4){
-                            status="Paralysised";
+                            status="Paralyzed";
                         }
 
                         move1=new StatusMove(moveNameP1, 80, player1.getType1(), status, 75);
@@ -298,11 +298,11 @@ public class MainGame {
                     } else if(statusNum==1){
                         status="Burned";
                     } else if(statusNum==2){
-                        status="Sleeped";
+                        status="Asleep";
                     } else if(statusNum==3){
-                        status="Freezed";
+                        status="Frozen";
                     } else if(statusNum==4){
-                        status="Paralysised";
+                        status="Paralyzed";
                     }
 
                     move1=new SpecialMove(moveNameP1,70,player1.getType1(),status,25, 70);
@@ -314,11 +314,11 @@ public class MainGame {
                     } else if(statusNum==1){
                         status="Burned";
                     } else if(statusNum==2){
-                        status="Sleeped";
+                        status="Asleep";
                     } else if(statusNum==3){
-                        status="Freezed";
+                        status="Frozen";
                     } else if(statusNum==4){
-                        status="Paralysised";
+                        status="Paralyzed";
                     }
 
                     move1=new StatusMove(moveNameP1, 80, player1.getType1(), status, 75);
@@ -349,7 +349,7 @@ public class MainGame {
                         System.out.println("\tThe move doesn't work...\n");
                     }
 
-                    //Checking to make sure the damage done did not kill the other player, otherwise a dead pokemon would be able to do damage
+                    //Checking to make sure the damage done did not kill the other player, otherwise a dead Pokémon would be able to do damage
                     if (!playerWon(player1, player2)) {
 
                         threshold = rn.nextInt(100);
@@ -419,7 +419,7 @@ public class MainGame {
                             System.out.println("\tThe move doesn't work...\n");
                         }
 
-                        //Checking to make sure the damage done did not kill the other player, otherwise a dead pokemon would be able to do damage
+                        //Checking to make sure the damage done did not kill the other player, otherwise a dead Pokémon would be able to do damage
                         if (!playerWon(player1, player2)) {
 
                             threshold = rn.nextInt(100);
@@ -440,7 +440,7 @@ public class MainGame {
                         }
                     }
 
-                    //TODO: use conditionCheck method to make it so that the pokemon can have a status effect.
+
 
                     //Reset stats as to not have stacking effects of stats
                     player1.statusReset();
@@ -455,14 +455,15 @@ public class MainGame {
             }
     }
 
+    //use conditionCheck method to make it so that the pokemon can have a status effect.
 
     /**
-     * This method will see if a pokemon will get effected my a status effect
-     * @param mon pokemon potentially being effected
+     * This method will see if a Pokémon will get effected my a status effect
+     * @param mon Pokémon potentially being effected
      * @param moveUsed move that was used to deal and effect
      */
     public static void conditionCheck(Pokemon mon, StatusMove moveUsed) {
-        //Decision statement to see if the pokemon even needs to have an effect done to him
+        //Decision statement to see if the Pokémon even needs to have an effect done to him
             if (!mon.getStatus().equals("none")) {
                 mon.setStatus("none");
             } else {
