@@ -315,24 +315,33 @@ public class Pokemon {
 
                 //Get the type effects
                     type1Effect = getTypeEffect(damageMove.getType(), other.getType1());
-                    try {
+
+                    if(type2!=null){
                         type2Effect = getTypeEffect(damageMove.getType(), other.getType2());
-                    } catch (Exception e) {
-                        type2Effect = 1;
+                    } else {
+                        type2Effect=1;
                     }
 
                 //Random
                     Random rn = new Random();
 
                 //Calculation for STAB
-                    for (int i = 0; i < types.size(); i++) {
-                        if (damageMove.getType().equalsIgnoreCase(types.get(i)) && !sameType) {
+                        if (damageMove.getType().equalsIgnoreCase(type1) && !sameType) {
                             STAB = 1.5;
                             sameType = true;
                         } else {
                             STAB = 1.0;
                         }
-                    }
+
+                        if(type2!=null) {
+                            if (damageMove.getType().equalsIgnoreCase(type2) && !sameType) {
+                                STAB = 1.5;
+                                sameType = true;
+                            } else {
+                                STAB = 1.0;
+                            }
+                        }
+
 
                 //Calculation for crit
                     int threshold = getSpeedStat() / 2;
@@ -344,15 +353,29 @@ public class Pokemon {
                         crit = 1;
                     }
 
+                //In depth calculations for damage
+                    double inside1=(((2.0 * 100 * crit) / 5 + 2))*(damageMove.getPower() * (this.getAttackStat() / other.getDefenceStat())) /50+2;
+                    double outside=STAB * type1Effect * type2Effect;
+
                 //Calculation for damage
-                    damage = (int) (((double) (((2 * 100 * crit) / 5 + 2) * damageMove.getPower() * (this.getAttackStat() / other.getDefenceStat())) / 50 + 2) * STAB * (rn.nextInt(255 - 217 + 1) - 217) / 255 * type1Effect * type2Effect);
+                    damage=(int)(inside1*outside);
 
                 //Recognition for a crit
                     if (critMade) {
-                        System.out.println("You got a crit!");
+                        System.out.println("\tYou got a crit!");
+                    }
+
+                //Recognition for super effective attacks
+                    if(type1Effect*type2Effect>2){
+                        System.out.println("\n\tThis move was super effective!");
+                    } else if(type1Effect*type2Effect<1){
+                        System.out.println("\n\tThis move was ineffective");
+                    } else if(type1Effect*type2Effect==0){
+                        System.out.println("\n\tThis move has no effect...");
                     }
 
                 return damage;
+
             } else if (moveUsed.getTypeOfMove().equalsIgnoreCase("Special")) {
                 SpecialMove damageMove=(SpecialMove)moveUsed;
 
@@ -401,7 +424,16 @@ public class Pokemon {
 
                 //Recognition for a crit
                     if (critMade) {
-                        System.out.println("You got a crit!");
+                        System.out.println(getName()+" got a crit!");
+                    }
+
+                //Recognition for super effective attacks
+                    if(type1Effect*type2Effect>2){
+                        System.out.println("\nThis move was super effective!");
+                    } else if(type1Effect*type2Effect<1){
+                        System.out.println("\nThis move was ineffective");
+                    } else if(type1Effect*type2Effect==0){
+                        System.out.println("\nThis move has no effect...");
                     }
 
                 //Return
@@ -550,8 +582,8 @@ public class Pokemon {
 
                 //Get the mutlipler by comparing both values to create a 2d coordinate
                     double multNum=1;
-                    ArrayList<String> temp=typeChart.get(pokeTypeNum);
-                    String multStr=temp.get(pokeTypeNum);
+                    ArrayList<String> temp=typeChart.get(pokeTypeNum+1);
+                    String multStr=temp.get(pokeTypeNum+1);
 
                 //Decision statement to see what multiplier it is
                     if(multStr.equalsIgnoreCase("0x")){

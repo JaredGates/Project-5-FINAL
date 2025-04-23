@@ -22,18 +22,35 @@ public class MainGame {
 
         //Get two random numbers for the two Pokémon that will be used
             Random rn=new Random();
-            int PokeRandomNum1=rn.nextInt(1, database.size()+1);
-            int PokeRandomNum2=rn.nextInt(1, database.size()+1);
+            int PokeRandomNum1=126;//rn.nextInt(1, database.size()+1);
+            int PokeRandomNum2=133;//rn.nextInt(1, database.size()+1);
 
         //Create the two pokemon based on the numbers gotten from the random number
             Pokemon Poke1=database.get(PokeRandomNum1);
             Pokemon Poke2=database.get(PokeRandomNum2);
 
-            System.out.println(Poke1.getName());
-            System.out.println(Poke2.getName());
+            System.out.println("Player 1 has gotten the pokemon: "+Poke1.getName()+" (DEX# " +PokeRandomNum1+")");
+
+            if(Poke1.getType2() == null){
+                System.out.println("Its type(s) are"+Poke1.getType1());
+            } else {
+                System.out.println("Its type(s) are "+Poke1.getType1()+" "+Poke1.getType2());
+            }
+
+
+            System.out.println("Player 2 has gotten the pokemon: "+Poke2.getName()+" (DEX# " +PokeRandomNum2+")");
+
+            if(Poke2.getType2() == null){
+                System.out.println("Its type(s) are"+Poke2.getType1());
+            } else {
+                System.out.println("Its type(s) are "+Poke2.getType1()+" "+Poke2.getType2());
+            }
 
         //Call the game loop method and run the game
-            gameLoop(Poke1, Poke2);
+            Pokemon winningPlayer;
+            winningPlayer=gameLoop(Poke1, Poke2);
+
+            System.out.println(winningPlayer.getName()+" has won!");
     }
 
     /**
@@ -80,10 +97,10 @@ public class MainGame {
 //                    String move3=lineScan.next();
 //                    String move4=lineScan.next();
 
-                    String move1=null;
-                    String move2=null;
-                    String move3=null;
-                    String move4=null;
+                    String move1="Attack";
+                    String move2="Special";
+                    String move3="Status";
+                    String move4="Protection";
 
                 //Create a pokemon object, depending on if type2 was null there will be a different object created
                     if (type2 == null) {
@@ -107,7 +124,7 @@ public class MainGame {
      */
     public static HashMap<String, Move> importMoves() throws FileNotFoundException {
         //Scanner for file
-            Scanner fileScan = new Scanner(new File("Somthing"));
+            Scanner fileScan = new Scanner(new File("Something"));
             fileScan.nextLine();
 
         //Hashmap containing all moves used for pokemon in the dex
@@ -176,9 +193,9 @@ public class MainGame {
     public static boolean playerWon(Pokemon player1, Pokemon player2){
 
         //Decision statement to see if a player's pokemon has gone below its health stat
-            if(player1.getCurrentHealth()<player1.getHealthStat()){
+            if(player1.getCurrentHealth()<0){
                 return true;
-            } else if(player2.getCurrentHealth()<player2.getHealthStat()){
+            } else if(player2.getCurrentHealth()<0){
                 return true;
             } else {
                 return false;
@@ -188,81 +205,256 @@ public class MainGame {
     /**
      * This method will house the main game loop and will run for each player's turn.
      */
-    public static void gameLoop(Pokemon player1, Pokemon player2) throws FileNotFoundException {
+    public static Pokemon gameLoop(Pokemon player1, Pokemon player2) throws FileNotFoundException {
         //Scanner for user input
             Scanner sc=new Scanner(System.in);
+
+        //Random
+            Random rn=new Random();
+
+        //Damage variable
+            int damage = 0;
+            int threshold=0;
 
         //Read in all the moves
 //            HashMap<String, Move> movesList=importMoves();
 
 
         //Main loop for the game
-            while(!playerWon(player1, player2)){
+            while(!playerWon(player1, player2)) {
+                System.out.println("\n" + player1.getName() + "'s health is " + player1.getCurrentHealth());
                 System.out.println("What move does player 1 want to use? ");
-                System.out.println("Your moves are "+player1.getMove1()+", "+player1.getMove2()+", "+player1.getMove3()+", "+player1.getMove4());
-                String moveNameP1=sc.nextLine();
+                System.out.println("Your moves are " + player1.getMove1() + ", " + player1.getMove2() + ", " + player1.getMove3() + ", " + player1.getMove4());
+                String moveNameP1 = sc.nextLine();
 
-                //TODO: make a system for the moves based on the names.
-//                    Move move1= movesList.get(moveNameP1);
-                    Move move1=new AttackMove(moveNameP1,100,"Dark",100);
+                //Check for incorrect input
+                    while(!(moveNameP1.equalsIgnoreCase("attack")||moveNameP1.equalsIgnoreCase("special")||moveNameP1.equalsIgnoreCase("status")||moveNameP1.equalsIgnoreCase("Protection"))){
+                        System.out.println("ERROR: incorrect input retry, moves are:");
+                        System.out.println(player1.getMove1() + ", " + player1.getMove2() + ", " + player1.getMove3() + ", " + player1.getMove4());
+                        moveNameP1=sc.nextLine();
+                    }
 
+                System.out.println("\n" + player2.getName() + "'s health is " + player2.getCurrentHealth());
                 System.out.println("What move does player 2 want to use? ");
-                System.out.print("Your moves are "+player2.getMove1()+", "+player2.getMove2()+", "+player2.getMove3()+", "+player2.getMove4());
-                String moveNameP2=sc.nextLine();
+                System.out.println("Your moves are " + player2.getMove1() + ", " + player2.getMove2() + ", " + player2.getMove3() + ", " + player2.getMove4());
+                String moveNameP2 = sc.nextLine();
 
-                //TODO: make a system for the moves based on the names.
-//                    Move move2= movesList.get(moveNameP2);
-                Move move2=new AttackMove(moveNameP2,100,"Ice",50);
+                //Check for incorrect input
+                    while(!(moveNameP2.equalsIgnoreCase("attack")||moveNameP2.equalsIgnoreCase("special")||moveNameP2.equalsIgnoreCase("status")||moveNameP2.equalsIgnoreCase("Protection"))){
+                        System.out.println("ERROR: incorrect input retry, moves are:");
+                        System.out.println(player2.getMove1() + ", " + player2.getMove2() + ", " + player2.getMove3() + ", " + player2.getMove4());
+                        moveNameP2=sc.nextLine();
+                    }
+
+                    Move move1=null;
+
+                    if(moveNameP1.equalsIgnoreCase("Attack")){
+                        move1=new AttackMove(moveNameP1,90,player1.getType1(),100);
+                    } else if(moveNameP1.equalsIgnoreCase("Special")){
+
+                        String status="none";
+                        int statusNum=rn.nextInt(5);
+                        if(statusNum==0){
+                            status="Poisoned";
+                        } else if(statusNum==1){
+                            status="Burned";
+                        } else if(statusNum==2){
+                            status="Sleeped";
+                        } else if(statusNum==3){
+                            status="Freezed";
+                        } else if(statusNum==4){
+                            status="Paralysised";
+                        }
+
+                        move1=new SpecialMove(moveNameP1,70,player1.getType1(),status,25, 70);
+                    } else if(moveNameP1.equalsIgnoreCase("Status")){
+                        String status="none";
+                        int statusNum=rn.nextInt(5);
+                        if(statusNum==0){
+                            status="Poisoned";
+                        } else if(statusNum==1){
+                            status="Burned";
+                        } else if(statusNum==2){
+                            status="Sleeped";
+                        } else if(statusNum==3){
+                            status="Freezed";
+                        } else if(statusNum==4){
+                            status="Paralysised";
+                        }
+
+                        move1=new StatusMove(moveNameP1, 80, player1.getType1(), status, 75);
+                    }
+
+                    Move move2=null;
+
+                if(moveNameP2.equalsIgnoreCase("Attack")){
+                    move2=new AttackMove(moveNameP2,90,player1.getType1(),100);
+                } else if(moveNameP2.equalsIgnoreCase("Special")){
+
+                    String status="none";
+                    int statusNum=rn.nextInt(5);
+                    if(statusNum==0){
+                        status="Poisoned";
+                    } else if(statusNum==1){
+                        status="Burned";
+                    } else if(statusNum==2){
+                        status="Sleeped";
+                    } else if(statusNum==3){
+                        status="Freezed";
+                    } else if(statusNum==4){
+                        status="Paralysised";
+                    }
+
+                    move1=new SpecialMove(moveNameP1,70,player1.getType1(),status,25, 70);
+                } else if(moveNameP1.equalsIgnoreCase("Status")){
+                    String status="none";
+                    int statusNum=rn.nextInt(5);
+                    if(statusNum==0){
+                        status="Poisoned";
+                    } else if(statusNum==1){
+                        status="Burned";
+                    } else if(statusNum==2){
+                        status="Sleeped";
+                    } else if(statusNum==3){
+                        status="Freezed";
+                    } else if(statusNum==4){
+                        status="Paralysised";
+                    }
+
+                    move1=new StatusMove(moveNameP1, 80, player1.getType1(), status, 75);
+                }
+
 
 
                 //Status effects do damage to each other
-                    player1.calcStatusDamage();
-                    player2.calcStatusDamage();
+                player1.calcStatusDamage();
+                player2.calcStatusDamage();
 
+                //Empty print
+                System.out.println();
 
                 //Decision statement to see which player goes first
-                    if(player1.getSpeedStat()>player2.getSpeedStat()&&!playerWon(player1,player2)){
+                if (player1.getSpeedStat() > player2.getSpeedStat() && !playerWon(player1, player2)) {
 
-                        //Player 1 has gone first so player 2 is dealt damage by player 1 first
-                            player2.setCurrentHealth(player2.calcDamage(move1, player1));
+                    threshold = rn.nextInt(100);
 
-                        //Print statement to recognise that a player has taken damage
-                            System.out.println(player2.getName()+" took "+player2.calcDamage(move1, player1)+" damage\n");
-
-                        //Checking to make sure the damage done did not kill the other player, otherwise a dead pokemon would be able to do damage
-                            if(!playerWon(player1,player2)) {
-
-                                //Player 2 now deals damage
-                                    player1.setCurrentHealth(player1.calcDamage(move2, player2));
-
-                                //Print statement to recognise that a player has taken damage
-                                    System.out.println(player1.getName()+" took "+player1.calcDamage(move1, player1)+" damage\n");
-                            }
-                    } else if (player2.getSpeedStat()>player1.getSpeedStat()&&!playerWon(player1,player2)) {
-
-                        //Player 2 has gone first so player 1 is dealt damage by player 2 first
-                            player1.setCurrentHealth(player1.calcDamage(move2, player2));
+                    //Player 1 has gone first so player 2 is dealt damage by player 1 first
+                    if (threshold < move1.getAccuracy()) {
+                        damage = (player2.calcDamage(move1, player1));
+                        player2.dealDamage(damage);
 
                         //Print statement to recognise that a player has taken damage
-                            System.out.println(player1.getName()+" took "+player1.calcDamage(move1, player1)+" damage\n");
+                        System.out.println("\t" + player2.getName() + " took " + damage + " damage\n");
+                    } else {
+                        System.out.println("\tThe move doesn't work...\n");
+                    }
 
+                    //Checking to make sure the damage done did not kill the other player, otherwise a dead pokemon would be able to do damage
+                    if (!playerWon(player1, player2)) {
 
-                        if(!playerWon(player1,player2)) {
+                        threshold = rn.nextInt(100);
+
+                        if (threshold < move2.getAccuracy()) {
 
                             //Player 1 now deals damage
-                                player2.setCurrentHealth(player2.calcDamage(move1, player1));
+                            damage = (player1.calcDamage(move2, player2));
+                            player1.dealDamage(damage);
 
                             //Print statement to recognise that a player has taken damage
-                                System.out.println(player2.getName()+" took "+player2.calcDamage(move1, player1)+" damage\n");
+                            System.out.println("\t" + player1.getName() + " took " + damage + " damage\n");
+
+                        } else {
+                            System.out.println("\tThe move doesn't work...\n");
+                        }
+
+                    }
+                } else if (player2.getSpeedStat() > player1.getSpeedStat() && !playerWon(player1, player2)) {
+
+                    threshold=rn.nextInt(100);
+
+                        if (threshold < move2.getAccuracy()) {
+
+                            //Player 2 has gone first so player 1 is dealt damage by player 2 first
+                                damage = (player1.calcDamage(move2, player2));
+                                player1.dealDamage(damage);
+
+                            //Print statement to recognise that a player has taken damage
+                                System.out.println("\t" + player1.getName() + " took " + damage + " damage\n");
+                        } else {
+                                System.out.println("\tThe move doesn't work...\n");
+                        }
+
+
+                    if (!playerWon(player1, player2)) {
+
+                        threshold=rn.nextInt(100);
+
+                        if(threshold<move1.getAccuracy()) {
+                            //Player 1 now deals damage
+                                damage = (player2.calcDamage(move1, player1));
+                                player2.dealDamage(damage);
+
+                            //Print statement to recognise that a player has taken damage
+                                System.out.println("\t" + player2.getName() + " took " + damage + " damage\n");
+                        } else {
+                            System.out.println("\tThe move doesn't work...\n");
+                        }
+
+                    }
+                } else {
+                    //FAIL STAT INCASE A PLAYER CANNOT BE PICKED, PLAYER 1 WILL GO FIRST
+                    if (player1.getSpeedStat() > player2.getSpeedStat() && !playerWon(player1, player2)) {
+
+
+                        threshold = rn.nextInt(100);
+
+                        //Player 1 has gone first so player 2 is dealt damage by player 1 first
+                        if (threshold < move1.getAccuracy()) {
+                            damage = (player2.calcDamage(move1, player1));
+                            player2.dealDamage(damage);
+
+                            //Print statement to recognise that a player has taken damage
+                            System.out.println("\t" + player2.getName() + " took " + damage + " damage\n");
+                        } else {
+                            System.out.println("\tThe move doesn't work...\n");
+                        }
+
+                        //Checking to make sure the damage done did not kill the other player, otherwise a dead pokemon would be able to do damage
+                        if (!playerWon(player1, player2)) {
+
+                            threshold = rn.nextInt(100);
+
+                            if (threshold < move2.getAccuracy()) {
+
+                                //Player 1 now deals damage
+                                damage = (player1.calcDamage(move2, player2));
+                                player1.dealDamage(damage);
+
+                                //Print statement to recognise that a player has taken damage
+                                System.out.println("\t" + player1.getName() + " took " + damage + " damage\n");
+
+                            } else {
+                                System.out.println("\tThe move doesn't work...\n");
+                            }
 
                         }
                     }
 
-                //Reset stats as to not have stacking effects of stats
+                    //TODO: use conditionCheck method to make it so that the pokemon can have a status effect.
+
+                    //Reset stats as to not have stacking effects of stats
                     player1.statusReset();
                     player2.statusReset();
+                }
+            }
+
+            if(player1.getCurrentHealth()<0){
+                return player2;
+            } else {
+                return player1;
             }
     }
+
 
     /**
      * This method will see if a pokemon will get effected my a status effect
