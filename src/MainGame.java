@@ -246,85 +246,9 @@ public class MainGame {
                         moveNameP2=sc.nextLine();
                     }
 
-                    Move move1=null;
+                    Move move1=makeMove(moveNameP1, player1);
 
-                    if(moveNameP1.equalsIgnoreCase("Attack")){
-                        move1=new AttackMove(moveNameP1,90,player1.getType1(),100);
-                    } else if(moveNameP1.equalsIgnoreCase("Special")){
-
-                        String status="none";
-                        int statusNum=rn.nextInt(5);
-                        if(statusNum==0){
-                            status="Poisoned";
-                        } else if(statusNum==1){
-                            status="Burned";
-                        } else if(statusNum==2){
-                            status="Asleep";
-                        } else if(statusNum==3){
-                            status="Frozen";
-                        } else if(statusNum==4){
-                            status="Paralyzed";
-                        }
-
-                        move1=new SpecialMove(moveNameP1,70,player1.getType1(),status,25, 70);
-                    } else if(moveNameP1.equalsIgnoreCase("Status")){
-                        String status="none";
-                        int statusNum=rn.nextInt(5);
-                        if(statusNum==0){
-                            status="Poisoned";
-                        } else if(statusNum==1){
-                            status="Burned";
-                        } else if(statusNum==2){
-                            status="Asleep";
-                        } else if(statusNum==3){
-                            status="Frozen";
-                        } else if(statusNum==4){
-                            status="Paralyzed";
-                        }
-
-                        move1=new StatusMove(moveNameP1, 80, player1.getType1(), status, 75);
-                    }
-
-                    Move move2=null;
-
-                if(moveNameP2.equalsIgnoreCase("Attack")){
-                    move2=new AttackMove(moveNameP2,90,player1.getType1(),100);
-                } else if(moveNameP2.equalsIgnoreCase("Special")){
-
-                    String status="none";
-                    int statusNum=rn.nextInt(5);
-                    if(statusNum==0){
-                        status="Poisoned";
-                    } else if(statusNum==1){
-                        status="Burned";
-                    } else if(statusNum==2){
-                        status="Asleep";
-                    } else if(statusNum==3){
-                        status="Frozen";
-                    } else if(statusNum==4){
-                        status="Paralyzed";
-                    }
-
-                    move1=new SpecialMove(moveNameP1,70,player1.getType1(),status,25, 70);
-                } else if(moveNameP1.equalsIgnoreCase("Status")){
-                    String status="none";
-                    int statusNum=rn.nextInt(5);
-                    if(statusNum==0){
-                        status="Poisoned";
-                    } else if(statusNum==1){
-                        status="Burned";
-                    } else if(statusNum==2){
-                        status="Asleep";
-                    } else if(statusNum==3){
-                        status="Frozen";
-                    } else if(statusNum==4){
-                        status="Paralyzed";
-                    }
-
-                    move1=new StatusMove(moveNameP1, 80, player1.getType1(), status, 75);
-                }
-
-
+                    Move move2=makeMove(moveNameP2, player2);
 
                 //Status effects do damage to each other
                 player1.calcStatusDamage();
@@ -336,116 +260,37 @@ public class MainGame {
                 //Decision statement to see which player goes first
                 if (player1.getSpeedStat() > player2.getSpeedStat() && !playerWon(player1, player2)) {
 
-                    threshold = rn.nextInt(100);
-
-                    //Player 1 has gone first so player 2 is dealt damage by player 1 first
-                    if (threshold < move1.getAccuracy()) {
-                        damage = (player2.calcDamage(move1, player1));
-                        player2.dealDamage(damage);
-
-                        //Print statement to recognise that a player has taken damage
-                        System.out.println("\t" + player2.getName() + " took " + damage + " damage\n");
-                    } else {
-                        System.out.println("\tThe move doesn't work...\n");
-                    }
+                    moveChoice(player1, player2, move1);
 
                     //Checking to make sure the damage done did not kill the other player, otherwise a dead Pokémon would be able to do damage
                     if (!playerWon(player1, player2)) {
 
-                        threshold = rn.nextInt(100);
-
-                        if (threshold < move2.getAccuracy()) {
-
-                            //Player 1 now deals damage
-                            damage = (player1.calcDamage(move2, player2));
-                            player1.dealDamage(damage);
-
-                            //Print statement to recognise that a player has taken damage
-                            System.out.println("\t" + player1.getName() + " took " + damage + " damage\n");
-
-                        } else {
-                            System.out.println("\tThe move doesn't work...\n");
-                        }
+                        moveChoice(player2, player1, move2);
 
                     }
                 } else if (player2.getSpeedStat() > player1.getSpeedStat() && !playerWon(player1, player2)) {
 
-                    threshold=rn.nextInt(100);
-
-                        if (threshold < move2.getAccuracy()) {
-
-                            //Player 2 has gone first so player 1 is dealt damage by player 2 first
-                                damage = (player1.calcDamage(move2, player2));
-                                player1.dealDamage(damage);
-
-                            //Print statement to recognise that a player has taken damage
-                                System.out.println("\t" + player1.getName() + " took " + damage + " damage\n");
-                        } else {
-                                System.out.println("\tThe move doesn't work...\n");
-                        }
-
+                    moveChoice(player2, player1, move2);
 
                     if (!playerWon(player1, player2)) {
 
-                        threshold=rn.nextInt(100);
-
-                        if(threshold<move1.getAccuracy()) {
-                            //Player 1 now deals damage
-                                damage = (player2.calcDamage(move1, player1));
-                                player2.dealDamage(damage);
-
-                            //Print statement to recognise that a player has taken damage
-                                System.out.println("\t" + player2.getName() + " took " + damage + " damage\n");
-                        } else {
-                            System.out.println("\tThe move doesn't work...\n");
-                        }
-
+                        moveChoice(player1, player2, move1);
                     }
                 } else {
-                    //FAIL STAT INCASE A PLAYER CANNOT BE PICKED, PLAYER 1 WILL GO FIRST
-                    if (player1.getSpeedStat() > player2.getSpeedStat() && !playerWon(player1, player2)) {
+                    //FAIL STATE INCASE A PLAYER CANNOT BE PICKED, PLAYER 1 WILL GO FIRST
+                    moveChoice(player1, player2, move1);
 
+                    //Checking to make sure the damage done did not kill the other player, otherwise a dead Pokémon would be able to do damage
+                    if (!playerWon(player1, player2)) {
 
-                        threshold = rn.nextInt(100);
+                        moveChoice(player2, player1, move2);
 
-                        //Player 1 has gone first so player 2 is dealt damage by player 1 first
-                        if (threshold < move1.getAccuracy()) {
-                            damage = (player2.calcDamage(move1, player1));
-                            player2.dealDamage(damage);
-
-                            //Print statement to recognise that a player has taken damage
-                            System.out.println("\t" + player2.getName() + " took " + damage + " damage\n");
-                        } else {
-                            System.out.println("\tThe move doesn't work...\n");
-                        }
-
-                        //Checking to make sure the damage done did not kill the other player, otherwise a dead Pokémon would be able to do damage
-                        if (!playerWon(player1, player2)) {
-
-                            threshold = rn.nextInt(100);
-
-                            if (threshold < move2.getAccuracy()) {
-
-                                //Player 1 now deals damage
-                                damage = (player1.calcDamage(move2, player2));
-                                player1.dealDamage(damage);
-
-                                //Print statement to recognise that a player has taken damage
-                                System.out.println("\t" + player1.getName() + " took " + damage + " damage\n");
-
-                            } else {
-                                System.out.println("\tThe move doesn't work...\n");
-                            }
-
-                        }
                     }
-
-
+                }
 
                     //Reset stats as to not have stacking effects of stats
-                    player1.statusReset();
-                    player2.statusReset();
-                }
+                        player1.statusReset();
+                        player2.statusReset();
             }
 
             if(player1.getCurrentHealth()<0){
@@ -455,28 +300,154 @@ public class MainGame {
             }
     }
 
+    public static Move makeMove(String moveName, Pokemon player){
+        Random rn=new Random(100);
+
+        Move move;
+
+        if(moveName.equalsIgnoreCase("Attack")){
+            move=new AttackMove(moveName,90,player.getType1(),100);
+        } else if(moveName.equalsIgnoreCase("Special")){
+
+            String status="none";
+            int statusNum=rn.nextInt(5);
+            if(statusNum==0){
+                status="Poisoned";
+            } else if(statusNum==1){
+                status="Burned";
+            } else if(statusNum==2){
+                status="Asleep";
+            } else if(statusNum==3){
+                status="Frozen";
+            } else {
+                status="Paralyzed";
+            }
+
+            move=new SpecialMove(moveName,70,player.getType1(),status,25, 70);
+
+        } else if(moveName.equalsIgnoreCase("Status")){
+            String status="none";
+            int statusNum=rn.nextInt(5);
+            if(statusNum==0){
+                status="Poisoned";
+            } else if(statusNum==1){
+                status="Burned";
+            } else if(statusNum==2){
+                status="Asleep";
+            } else if(statusNum==3){
+                status="Frozen";
+            } else {
+                status="Paralyzed";
+            }
+
+            move=new StatusMove(moveName, 80, player.getType1(), status, 75);
+        } else {
+            move=new ProtectionMove(moveName, 100, player.getType1());
+        }
+
+        return move;
+    }
+
+    public static void moveChoice(Pokemon player1, Pokemon player2, Move move) throws FileNotFoundException {
+        if(move.getTypeOfMove().equalsIgnoreCase("Attack")) {
+            makeAttack(player1, player2, (AttackMove)move);
+        }
+
+        if(move.getTypeOfMove().equalsIgnoreCase("Special")){
+            makeSpecial(player1, player2, (SpecialMove)move);
+        }
+
+        if(move.getTypeOfMove().equalsIgnoreCase("Status")){
+            makeStatus(player1, player2, (StatusMove)move);
+        }
+
+        if(move.getTypeOfMove().equalsIgnoreCase("Protection")){
+            makeProtection(player1);
+        }
+    }
+
+    public static void makeAttack(Pokemon player1, Pokemon player2, AttackMove move) throws FileNotFoundException {
+        Random rn=new Random();
+
+        int damage=0;
+        int threshold = rn.nextInt(100);
+
+        //Player 1 has gone first so player 2 is dealt damage by player 1 first
+        if (threshold < move.getAccuracy()) {
+            damage = (player2.calcDamage(move, player1));
+            player2.dealDamage(damage);
+
+            //Print statement to recognise that a player has taken damage
+            System.out.println("\t" + player2.getName() + " took " + damage + " damage\n");
+        } else {
+            System.out.println("\tThe move doesn't work...\n");
+        }
+    }
+
+    public static void makeSpecial(Pokemon player1, Pokemon player2, SpecialMove move) throws FileNotFoundException {
+        Random rn=new Random();
+
+        int damage=0;
+        int threshold = rn.nextInt(100);
+
+        //Player 1 has gone first so player 2 is dealt damage by player 1 first
+        if (threshold < move.getAccuracy()) {
+            damage = (player2.calcDamage(move, player1));
+            player2.dealDamage(damage);
+
+            //Print statement to recognise that a player has taken damage
+            System.out.println("\t" + player2.getName() + " took " + damage + " damage\n");
+        } else {
+            System.out.println("\tThe move doesn't work...\n");
+        }
+
+        threshold=rn.nextInt(100);
+
+        if(threshold<move.getStatusChance()){
+            player2.setStatus(move.getStatus());
+            System.out.println("\t"+player2.getName()+" has been "+move.getStatus());
+        }
+    }
+
+    public static void makeStatus(Pokemon player1, Pokemon player2, StatusMove move){
+        Random rn=new Random();
+
+        int threshold=rn.nextInt(100);
+
+        if(threshold<move.getStatusChance()){
+            player2.setStatus(move.getStatus());
+            System.out.println("\t"+player2.getName()+" has been "+move.getStatus());
+        }
+    }
+
+    public static void makeProtection(Pokemon player1){
+        player1.setCurrentDefence(500);
+        player1.setCurrentSpecialDefence(500);
+    }
+
+
     //use conditionCheck method to make it so that the pokemon can have a status effect.
 
-    /**
-     * This method will see if a Pokémon will get effected my a status effect
-     * @param mon Pokémon potentially being effected
-     * @param moveUsed move that was used to deal and effect
-     */
-    public static void conditionCheck(Pokemon mon, StatusMove moveUsed) {
-        //Decision statement to see if the Pokémon even needs to have an effect done to him
-            if (!mon.getStatus().equals("none")) {
-                mon.setStatus("none");
-            } else {
-                //See if the effect triggers
-                    Random rn = new Random();
-                    int trigger = rn.nextInt(100);
-
-                //Decision statement to see if an effect it triggers
-                    if (trigger > moveUsed.getStatusChance()) {
-                        mon.setStatus(moveUsed.getStatus());
-                    } else {
-                        mon.setStatus("none");
-                    }
-            }
-    }
+//    /**
+//     * This method will see if a Pokémon will get effected my a status effect
+//     * @param mon Pokémon potentially being effected
+//     * @param moveUsed move that was used to deal and effect
+//     */
+//    public static void conditionCheck(Pokemon mon, StatusMove moveUsed) {
+//        //Decision statement to see if the Pokémon even needs to have an effect done to him
+//            if (!mon.getStatus().equals("none")) {
+//                mon.setStatus("none");
+//            } else {
+//                //See if the effect triggers
+//                    Random rn = new Random();
+//                    int trigger = rn.nextInt(100);
+//
+//                //Decision statement to see if an effect it triggers
+//                    if (trigger > moveUsed.getStatusChance()) {
+//                        mon.setStatus(moveUsed.getStatus());
+//                    } else {
+//                        mon.setStatus("none");
+//                    }
+//            }
+//    }
 }

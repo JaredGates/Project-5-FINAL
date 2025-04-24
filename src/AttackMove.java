@@ -17,15 +17,6 @@ public class AttackMove extends Move {
         this.power=power;
     }
 
-    public AttackMove(AttackMove other){
-        super(other);
-        this.power=other.power;
-    }
-
-    public AttackMove newCopy(){
-        return new AttackMove(this);
-    }
-
     /**
      * Returns the power of the move
      * @return int

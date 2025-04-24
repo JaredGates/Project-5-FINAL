@@ -17,16 +17,6 @@ public class StatusMove extends Move {
         this.statusChance=statusChance;
     }
 
-    public StatusMove(StatusMove other){
-        super(other);
-        this.status=other.status;
-        this.statusChance=other.statusChance;
-    }
-
-    public StatusMove newCopy(){
-        return new StatusMove(this);
-    }
-
     /**
      * This method will determine what the pokemon is afflicted by based on the move.
      * Then it returns the string of that effect.

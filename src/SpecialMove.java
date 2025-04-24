@@ -20,17 +20,6 @@ public class SpecialMove extends Move {
         this.power=power;
     }
 
-    public SpecialMove(SpecialMove other){
-        super(other);
-        this.status=other.status;
-        this.statusChance=other.statusChance;
-        this.power=other.power;
-    }
-
-    public SpecialMove newCopy(){
-        return new SpecialMove(this);
-    }
-
     /**
      * Returns the power of the move
      * @return int
@@ -54,13 +43,5 @@ public class SpecialMove extends Move {
      */
     public double getStatusChance(){
         return statusChance;
-    }
-
-    /**
-     * Returns if the status was afflicted or not
-     * @return boolean
-     */
-    public boolean statusAfflict(){
-        return false;
     }
 }

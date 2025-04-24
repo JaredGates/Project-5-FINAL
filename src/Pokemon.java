@@ -26,6 +26,8 @@ public class Pokemon {
         private int currentSpeed;
         private int currentAttack;
         private int currentSpecialAttack;
+        private int currentDefence;
+        private int currentSpecialDefence;
 
     //Stats of the Pokémon that will not change
         private final int healthStat;
@@ -52,9 +54,11 @@ public class Pokemon {
         this.healthStat=healthStat;
         this.currentAttack=attackStat;
         this.attackStat=attackStat;
+        this.currentDefence=defenceStat;
         this.defenceStat=defenceStat;
         this.currentSpecialAttack=specialAttackStat;
         this.specialAttackStat=specialAttackStat;
+        this.currentSpecialDefence=specialDefenceStat;
         this.specialDefenceStat=specialDefenceStat;
         this.currentSpeed=speedStat;
         this.speedStat=speedStat;
@@ -75,9 +79,11 @@ public class Pokemon {
         this.healthStat=healthStat;
         this.currentAttack=attackStat;
         this.attackStat=attackStat;
+        this.currentDefence=defenceStat;
         this.defenceStat=defenceStat;
         this.currentSpecialAttack=specialAttackStat;
         this.specialAttackStat=specialAttackStat;
+        this.currentSpecialDefence=specialDefenceStat;
         this.specialDefenceStat=specialDefenceStat;
         this.currentSpeed=speedStat;
         this.speedStat=speedStat;
@@ -199,6 +205,14 @@ public class Pokemon {
         return attackStat;
     }
 
+    public int getCurrentDefence(){
+        return currentDefence;
+    }
+
+    public void setCurrentDefence(int newStat){
+        currentDefence=newStat;
+    }
+
     /**
      * Returns the Defence stat for the Pokémon
      * @return int
@@ -229,6 +243,14 @@ public class Pokemon {
      */
     public int getSAttackStat(){
         return specialAttackStat;
+    }
+
+    public int getCurrentSpecialDefence(){
+        return currentSpecialDefence;
+    }
+
+    public void setCurrentSpecialDefence(int newStat){
+        currentSpecialDefence=newStat;
     }
 
     /**
@@ -306,7 +328,7 @@ public class Pokemon {
 
                 //Variables that control damage modifiers
                     int damage;
-                    double STAB = 0;
+                    double STAB;
                     int crit;
                     boolean critMade = false;
                     boolean sameType = false;
@@ -326,7 +348,7 @@ public class Pokemon {
                     Random rn = new Random();
 
                 //Calculation for STAB
-                        if (damageMove.getType().equalsIgnoreCase(type1) && !sameType) {
+                        if (damageMove.getType().equalsIgnoreCase(type1)) {
                             STAB = 1.5;
                             sameType = true;
                         } else {
@@ -354,7 +376,7 @@ public class Pokemon {
                     }
 
                 //In depth calculations for damage
-                    double inside1=(((2.0 * 100 * crit) / 5 + 2))*(damageMove.getPower() * (this.getAttackStat() / other.getDefenceStat())) /50+2;
+                    double inside1=(((2.0 * 100 * crit) / 5 + 2))*(damageMove.getPower() * (this.getCurrentAttack() / other.getCurrentDefence())) /50+2;
                     double outside=STAB * type1Effect * type2Effect;
 
                 //Calculation for damage
@@ -381,7 +403,7 @@ public class Pokemon {
 
                 //Variables that control damage modifiers
                 int damage;
-                double STAB = 0;
+                double STAB;
                 int crit;
                 boolean critMade = false;
                 boolean sameType = false;
@@ -390,18 +412,26 @@ public class Pokemon {
 
                 //Get the type effects
                 type1Effect = getTypeEffect(damageMove.getType(), other.getType1());
-                try {
+
+                if(type2!=null){
                     type2Effect = getTypeEffect(damageMove.getType(), other.getType2());
-                } catch (Exception e) {
-                    type2Effect = 1;
+                } else {
+                    type2Effect=1;
                 }
 
                 //Random
                 Random rn = new Random();
 
                 //Calculation for STAB
-                for (int i = 0; i < types.size(); i++) {
-                    if (damageMove.getType().equalsIgnoreCase(types.get(i)) && !sameType) {
+                if (damageMove.getType().equalsIgnoreCase(type1)) {
+                    STAB = 1.5;
+                    sameType = true;
+                } else {
+                    STAB = 1.0;
+                }
+
+                if(type2!=null) {
+                    if (damageMove.getType().equalsIgnoreCase(type2) && !sameType) {
                         STAB = 1.5;
                         sameType = true;
                     } else {
@@ -409,35 +439,39 @@ public class Pokemon {
                     }
                 }
 
-                //Calculation for crit
-                    int threshold = getSpeedStat() / 2;
 
-                    if (rn.nextInt(255) < threshold) {
-                        critMade = true;
-                        crit = 2;
-                    } else {
-                        crit = 1;
-                    }
+                //Calculation for crit
+                int threshold = getSpeedStat() / 2;
+
+                if (rn.nextInt(255) < threshold) {
+                    critMade = true;
+                    crit = 2;
+                } else {
+                    crit = 1;
+                }
+
+                //In depth calculations for damage
+                double inside1=(((2.0 * 100 * crit) / 5 + 2))*(damageMove.getPower() * ((double) this.getCurrentSpecialAttack() / other.getCurrentSpecialDefence())) /50+2;
+                double outside=STAB * type1Effect * type2Effect;
 
                 //Calculation for damage
-                    damage = (int) (((double) (((2 * 100 * crit) / 5 + 2) * damageMove.getPower() * (this.getAttackStat() / other.getDefenceStat())) / 50 + 2) * STAB * (rn.nextInt(255 - 217 + 1) - 217) / 255 * type1Effect * type2Effect);
+                damage=(int)(inside1*outside);
 
                 //Recognition for a crit
-                    if (critMade) {
-                        System.out.println(getName()+" got a crit!");
-                    }
+                if (critMade) {
+                    System.out.println("\tYou got a crit!");
+                }
 
                 //Recognition for super effective attacks
-                    if(type1Effect*type2Effect>2){
-                        System.out.println("\nThis move was super effective!");
-                    } else if(type1Effect*type2Effect<1){
-                        System.out.println("\nThis move was ineffective");
-                    } else if(type1Effect*type2Effect==0){
-                        System.out.println("\nThis move has no effect...");
-                    }
+                if(type1Effect*type2Effect>2){
+                    System.out.println("\n\tThis move was super effective!");
+                } else if(type1Effect*type2Effect<1){
+                    System.out.println("\n\tThis move was ineffective");
+                } else if(type1Effect*type2Effect==0){
+                    System.out.println("\n\tThis move has no effect...");
+                }
 
-                //Return
-                    return damage;
+                return damage;
             }
 
         //Return
@@ -503,28 +537,40 @@ public class Pokemon {
         // Adjusted calcStatusDamage() to be a switch statement for better presentation
         // and easier access.
         switch (status){
-            case "Poisoned" -> dealDamage(healthStat / 8);
+            case "Poisoned" -> {
+                dealDamage(healthStat / 8);
+                System.out.println("\t"+getName()+" has taken "+healthStat/8+" poison damage");
+            }
             case "Burned" -> {
                 dealDamage(healthStat / 16);
                 setCurrentAttack(attackStat / 2);
+                System.out.println("\t"+getName()+" has taken "+healthStat/8+" burn damage");
             }
             case "Frozen" -> {
                 setCurrentAttack(0);
                 setCurrentSpecialAttack(0);
+                System.out.println("\t"+getName()+" is frozen");
             }
             case "Paralyzed" -> {
                 setCurrentSpeed(speedStat / 4);
                 if (new Random().nextInt(100) > 75){
                     setCurrentAttack(0);
                     setCurrentSpecialAttack(0);
+                    System.out.println("\t"+getName()+" is paralyzed");
+
                 }
             }
             case "Asleep" -> {
-                if (new Random().nextInt(100) > 75){
                     setCurrentAttack(0);
                     setCurrentSpecialAttack(0);
+                if (new Random().nextInt(100) > 75){
+                    setCurrentAttack(attackStat);
+                    setCurrentSpecialAttack(specialAttackStat);
                     setStatus("none");
+                } else {
+                    System.out.println("\t"+getName()+" is fast asleep");
                 }
+
             }
         }
     }
@@ -533,25 +579,12 @@ public class Pokemon {
      * Resets everything changed in the last method
      */
     public void statusReset(){
-
-//        if(getStatus().equalsIgnoreCase("Burned")){
-//            setCurrentAttack(attackStat);
-//        } else if(getStatus().equalsIgnoreCase("Frozen")){
-//            setCurrentAttack(currentAttack);
-//            setCurrentSpecialAttack(currentSpecialAttack);
-//        } else if(getStatus().equalsIgnoreCase("Paralyzed")){
-//            setCurrentSpeed(speedStat);
-//            setCurrentAttack(attackStat);
-//            setCurrentSpecialAttack(specialAttackStat);
-//        } else if(getStatus().equalsIgnoreCase("Asleep")){
-//            setCurrentAttack(attackStat);
-//            setCurrentSpecialAttack(specialAttackStat);
-//        }
-
         // Explicitly reverses stat changes
-        currentAttack = attackStat;
-        currentSpecialAttack = specialAttackStat;
-        currentSpeed = speedStat;
+            currentAttack = attackStat;
+            currentSpecialAttack = specialAttackStat;
+            currentSpeed = speedStat;
+            currentDefence=defenceStat;
+            currentSpecialDefence=specialDefenceStat;
     }
 
     /**

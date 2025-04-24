@@ -23,15 +23,6 @@ public abstract class Move {
         this.typeOfMove=typeOfMove;
     }
 
-    public Move(Move other){
-        this.name=other.name;
-        this.accuracy= other.accuracy;
-        this.type= other.type;
-        this.typeOfMove=other.typeOfMove;
-    }
-
-    public abstract Move newCopy();
-
     public String getTypeOfMove(){
         return typeOfMove;
     }
