@@ -22,8 +22,11 @@ public class MainGame {
 
         //Get two random numbers for the two Pokémon that will be used
             Random rn=new Random();
-            int PokeRandomNum1=126;//rn.nextInt(1, database.size()+1);
-            int PokeRandomNum2=133;//rn.nextInt(1, database.size()+1);
+//            int PokeRandomNum1=rn.nextInt(1, database.size()+1);
+//            int PokeRandomNum2=rn.nextInt(1, database.size()+1);
+
+            int PokeRandomNum1=13;
+            int PokeRandomNum2=81;
 
         //Create the two Pokémon based on the numbers gotten from the random number
             Pokemon Poke1=database.get(PokeRandomNum1);
@@ -117,73 +120,73 @@ public class MainGame {
             return newDatabaseEntry;
     }
 
-    /**
-     * This method will go through all the moves any Pokémon can know
-     * @return a hashmap containing all moves
-     * @throws FileNotFoundException if file not found
-     */
-    public static HashMap<String, Move> importMoves() throws FileNotFoundException {
-        //Scanner for file
-            Scanner fileScan = new Scanner(new File("Something"));
-            fileScan.nextLine();
-
-        //Hashmap containing all moves used for Pokémon in the dex
-            HashMap<String, Move> newMovesEntry = new HashMap<>();
-
-        //While loop to get all data from the moves file
-            while (fileScan.hasNext()) {
-
-                //Make a new scanner for each line in the file to scan individually with a comma delimiter
-                    String newLine=fileScan.nextLine();
-                    Scanner lineScan = new Scanner(newLine);
-                    lineScan.useDelimiter(",");
-
-                //Get the name of the move and the type the move is
-                    String moveName=lineScan.next();
-                    String typeOfMove=lineScan.next();
-
-                //Empty Move object
-                    Move tempMove;
-
-                //Decision statement for each type of move making a different kind of Move object
-                    if(typeOfMove.equalsIgnoreCase("Attack")) {
-                        //Get data for an attack move
-                            String type = lineScan.next();
-                            double accuracy=lineScan.nextDouble();
-                            int power = lineScan.nextInt();
-
-                        //Make the Move object
-                            tempMove=new AttackMove(moveName, accuracy, type, power);
-
-                    } else if(typeOfMove.equalsIgnoreCase("Status")){
-                        //Get data for a status move
-                            String type = lineScan.next();
-                            double accuracy=lineScan.nextDouble();
-                            String status=lineScan.next();
-                            double statusChance=lineScan.nextDouble();
-
-                        //Create a new Move
-                            tempMove=new StatusMove(moveName, accuracy, type, status, statusChance);
-
-                    } else {
-                        //Get data for a special
-                            String type = lineScan.next();
-                            double accuracy=lineScan.nextDouble();
-                            int power = lineScan.nextInt();
-                            String status=lineScan.next();
-                            double statusChance=lineScan.nextDouble();
-
-                        //Create a new Move
-                            tempMove=new SpecialMove(moveName, accuracy, type, status, statusChance, power);
-                    }
-
-                //Add entry into the hashmap
-                    newMovesEntry.put(moveName, tempMove);
-            }
-
-        //Return
-            return newMovesEntry;
-    }
+//    /**
+//     * This method will go through all the moves any Pokémon can know
+//     * @return a hashmap containing all moves
+//     * @throws FileNotFoundException if file not found
+//     */
+//    public static HashMap<String, Move> importMoves() throws FileNotFoundException {
+//        //Scanner for file
+//            Scanner fileScan = new Scanner(new File("Something"));
+//            fileScan.nextLine();
+//
+//        //Hashmap containing all moves used for Pokémon in the dex
+//            HashMap<String, Move> newMovesEntry = new HashMap<>();
+//
+//        //While loop to get all data from the moves file
+//            while (fileScan.hasNext()) {
+//
+//                //Make a new scanner for each line in the file to scan individually with a comma delimiter
+//                    String newLine=fileScan.nextLine();
+//                    Scanner lineScan = new Scanner(newLine);
+//                    lineScan.useDelimiter(",");
+//
+//                //Get the name of the move and the type the move is
+//                    String moveName=lineScan.next();
+//                    String typeOfMove=lineScan.next();
+//
+//                //Empty Move object
+//                    Move tempMove;
+//
+//                //Decision statement for each type of move making a different kind of Move object
+//                    if(typeOfMove.equalsIgnoreCase("Attack")) {
+//                        //Get data for an attack move
+//                            String type = lineScan.next();
+//                            double accuracy=lineScan.nextDouble();
+//                            int power = lineScan.nextInt();
+//
+//                        //Make the Move object
+//                            tempMove=new AttackMove(moveName, accuracy, type, power);
+//
+//                    } else if(typeOfMove.equalsIgnoreCase("Status")){
+//                        //Get data for a status move
+//                            String type = lineScan.next();
+//                            double accuracy=lineScan.nextDouble();
+//                            String status=lineScan.next();
+//                            double statusChance=lineScan.nextDouble();
+//
+//                        //Create a new Move
+//                            tempMove=new StatusMove(moveName, accuracy, type, status, statusChance);
+//
+//                    } else {
+//                        //Get data for a special
+//                            String type = lineScan.next();
+//                            double accuracy=lineScan.nextDouble();
+//                            int power = lineScan.nextInt();
+//                            String status=lineScan.next();
+//                            double statusChance=lineScan.nextDouble();
+//
+//                        //Create a new Move
+//                            tempMove=new SpecialMove(moveName, accuracy, type, status, statusChance, power);
+//                    }
+//
+//                //Add entry into the hashmap
+//                    newMovesEntry.put(moveName, tempMove);
+//            }
+//
+//        //Return
+//            return newMovesEntry;
+//    }
 
     /**
      * This method will check to see if a player has won the game, if they have not then it will return false,
@@ -222,52 +225,32 @@ public class MainGame {
 
         //Main loop for the game
             while(!playerWon(player1, player2)) {
-                System.out.println("\n" + player1.getName() + "'s health is " + player1.getCurrentHealth());
-                System.out.println("What move does player 1 want to use? ");
-                System.out.println("Your moves are " + player1.getMove1() + ", " + player1.getMove2() + ", " + player1.getMove3() + ", " + player1.getMove4());
-                String moveNameP1 = sc.nextLine();
+                String moveNameP1=playerChoice(player1, sc);
 
-                //Check for incorrect input
-                    while(!(moveNameP1.equalsIgnoreCase("attack")||moveNameP1.equalsIgnoreCase("special")||moveNameP1.equalsIgnoreCase("status")||moveNameP1.equalsIgnoreCase("Protection"))){
-                        System.out.println("ERROR: incorrect input retry, moves are:");
-                        System.out.println(player1.getMove1() + ", " + player1.getMove2() + ", " + player1.getMove3() + ", " + player1.getMove4());
-                        moveNameP1=sc.nextLine();
-                    }
+                String moveNameP2=playerChoice(player2, sc);
 
-                System.out.println("\n" + player2.getName() + "'s health is " + player2.getCurrentHealth());
-                System.out.println("What move does player 2 want to use? ");
-                System.out.println("Your moves are " + player2.getMove1() + ", " + player2.getMove2() + ", " + player2.getMove3() + ", " + player2.getMove4());
-                String moveNameP2 = sc.nextLine();
+                Move move1=makeMove(moveNameP1, player1);
 
-                //Check for incorrect input
-                    while(!(moveNameP2.equalsIgnoreCase("attack")||moveNameP2.equalsIgnoreCase("special")||moveNameP2.equalsIgnoreCase("status")||moveNameP2.equalsIgnoreCase("Protection"))){
-                        System.out.println("ERROR: incorrect input retry, moves are:");
-                        System.out.println(player2.getMove1() + ", " + player2.getMove2() + ", " + player2.getMove3() + ", " + player2.getMove4());
-                        moveNameP2=sc.nextLine();
-                    }
-
-                    Move move1=makeMove(moveNameP1, player1);
-
-                    Move move2=makeMove(moveNameP2, player2);
+                Move move2=makeMove(moveNameP2, player2);
 
                 //Status effects do damage to each other
-                player1.calcStatusDamage();
-                player2.calcStatusDamage();
+                    player1.calcStatusDamage();
+                    player2.calcStatusDamage();
 
                 //Empty print
-                System.out.println();
+                    System.out.println();
 
                 //Decision statement to see which player goes first
-                if (player1.getSpeedStat() > player2.getSpeedStat() && !playerWon(player1, player2)) {
+                    if (player1.getSpeedStat() > player2.getSpeedStat() && !playerWon(player1, player2)) {
 
-                    moveChoice(player1, player2, move1);
+                        moveChoice(player1, player2, move1);
 
-                    //Checking to make sure the damage done did not kill the other player, otherwise a dead Pokémon would be able to do damage
-                    if (!playerWon(player1, player2)) {
+                        //Checking to make sure the damage done did not kill the other player, otherwise a dead Pokémon would be able to do damage
+                            if (!playerWon(player1, player2)) {
 
-                        moveChoice(player2, player1, move2);
+                                moveChoice(player2, player1, move2);
 
-                    }
+                            }
                 } else if (player2.getSpeedStat() > player1.getSpeedStat() && !playerWon(player1, player2)) {
 
                     moveChoice(player2, player1, move2);
@@ -276,6 +259,7 @@ public class MainGame {
 
                         moveChoice(player1, player2, move1);
                     }
+
                 } else {
                     //FAIL STATE INCASE A PLAYER CANNOT BE PICKED, PLAYER 1 WILL GO FIRST
                     moveChoice(player1, player2, move1);
@@ -298,6 +282,22 @@ public class MainGame {
             } else {
                 return player1;
             }
+    }
+
+    public static String playerChoice(Pokemon player, Scanner sc){
+        System.out.println("\n" + player.getName() + "'s health is " + player.getCurrentHealth());
+        System.out.println("What move does player 1 want to use? ");
+        System.out.println("Your moves are " + player.getMove1() + ", " + player.getMove2() + ", " + player.getMove3() + ", " + player.getMove4());
+        String moveNameP1 = sc.nextLine();
+
+        //Check for incorrect input
+        while(!(moveNameP1.equalsIgnoreCase("attack")||moveNameP1.equalsIgnoreCase("special")||moveNameP1.equalsIgnoreCase("status")||moveNameP1.equalsIgnoreCase("Protection"))){
+            System.out.println("ERROR: incorrect input retry, moves are:");
+            System.out.println(player.getMove1() + ", " + player.getMove2() + ", " + player.getMove3() + ", " + player.getMove4());
+            moveNameP1=sc.nextLine();
+        }
+
+        return moveNameP1;
     }
 
     public static Move makeMove(String moveName, Pokemon player){
@@ -351,17 +351,11 @@ public class MainGame {
     public static void moveChoice(Pokemon player1, Pokemon player2, Move move) throws FileNotFoundException {
         if(move.getTypeOfMove().equalsIgnoreCase("Attack")) {
             makeAttack(player1, player2, (AttackMove)move);
-        }
-
-        if(move.getTypeOfMove().equalsIgnoreCase("Special")){
+        }else if(move.getTypeOfMove().equalsIgnoreCase("Special")){
             makeSpecial(player1, player2, (SpecialMove)move);
-        }
-
-        if(move.getTypeOfMove().equalsIgnoreCase("Status")){
+        }else if(move.getTypeOfMove().equalsIgnoreCase("Status")){
             makeStatus(player1, player2, (StatusMove)move);
-        }
-
-        if(move.getTypeOfMove().equalsIgnoreCase("Protection")){
+        }else if(move.getTypeOfMove().equalsIgnoreCase("Protection")){
             makeProtection(player1);
         }
     }
@@ -374,7 +368,7 @@ public class MainGame {
 
         //Player 1 has gone first so player 2 is dealt damage by player 1 first
         if (threshold < move.getAccuracy()) {
-            damage = (player2.calcDamage(move, player1));
+            damage = (player1.calcDamage(move, player2));
             player2.dealDamage(damage);
 
             //Print statement to recognise that a player has taken damage
@@ -392,7 +386,7 @@ public class MainGame {
 
         //Player 1 has gone first so player 2 is dealt damage by player 1 first
         if (threshold < move.getAccuracy()) {
-            damage = (player2.calcDamage(move, player1));
+            damage = (player1.calcDamage(move, player2));
             player2.dealDamage(damage);
 
             //Print statement to recognise that a player has taken damage

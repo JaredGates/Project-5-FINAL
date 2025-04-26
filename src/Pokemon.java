@@ -376,11 +376,17 @@ public class Pokemon {
                     }
 
                 //In depth calculations for damage
-                    double inside1=(((2.0 * 100 * crit) / 5 + 2))*(damageMove.getPower() * (this.getCurrentAttack() / other.getCurrentDefence())) /50+2;
-                    double outside=STAB * type1Effect * type2Effect;
-
-                //Calculation for damage
-                    damage=(int)(inside1*outside);
+                    damage=2;
+                    damage=damage*100;
+                    damage=damage*crit;
+                    damage=damage/5;
+                    damage=damage+2;
+                    damage=damage* ((AttackMove) moveUsed).getPower();
+                    damage= (int) (damage*((double)this.getCurrentAttack()/(double)other.getCurrentDefence()));
+                    damage=damage/50;
+                    damage=damage+2;
+                    damage= (int) (damage*STAB);
+                    damage= (int) (damage*type1Effect*type2Effect);
 
                 //Recognition for a crit
                     if (critMade) {
@@ -390,7 +396,7 @@ public class Pokemon {
                 //Recognition for super effective attacks
                     if(type1Effect*type2Effect>2){
                         System.out.println("\n\tThis move was super effective!");
-                    } else if(type1Effect*type2Effect<1){
+                    } else if(type1Effect*type2Effect<1&&type1Effect*type2Effect>0){
                         System.out.println("\n\tThis move was ineffective");
                     } else if(type1Effect*type2Effect==0){
                         System.out.println("\n\tThis move has no effect...");
@@ -648,8 +654,8 @@ public class Pokemon {
 
                 //Get the multiplier by comparing both values to create a 2d coordinate
                     double multNum=1;
-                    ArrayList<String> temp=typeChart.get(pokeTypeNum+1);
-                    String multStr=temp.get(pokeTypeNum+1);
+                    ArrayList<String> temp=typeChart.get(pokeTypeNum);
+                    String multStr=temp.get(moveTypeNum);
 
                 //Decision statement to see what multiplier it is
                     if(multStr.equalsIgnoreCase("0x")){
