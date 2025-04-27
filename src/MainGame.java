@@ -417,6 +417,7 @@ public class MainGame {
     public static void makeProtection(Pokemon player1){
         player1.setCurrentDefence(500);
         player1.setCurrentSpecialDefence(500);
+        player1.setCurrentSpeed(500);
     }
 
 

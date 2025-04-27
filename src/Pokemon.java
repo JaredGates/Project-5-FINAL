@@ -654,8 +654,8 @@ public class Pokemon {
 
                 //Get the multiplier by comparing both values to create a 2d coordinate
                     double multNum=1;
-                    ArrayList<String> temp=typeChart.get(pokeTypeNum);
-                    String multStr=temp.get(moveTypeNum);
+                    ArrayList<String> temp=typeChart.get(moveTypeNum);
+                    String multStr=temp.get(pokeTypeNum);
 
                 //Decision statement to see what multiplier it is
                     if(multStr.equalsIgnoreCase("0x")){
