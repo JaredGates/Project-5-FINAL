@@ -488,58 +488,6 @@ public class Pokemon {
      * Method that calculates the damage and effects that status may do
      */
     public void calcStatusDamage(){
-
-        //Decision statement for each of the 5 statuses
-//            if(getStatus().equalsIgnoreCase("Poisoned")){
-//
-//                //Decreases health by an eighth of the maximum
-//                    dealDamage((int) (getHealthStat()*(1.0/8)));
-//            } else if(getStatus().equalsIgnoreCase("Burned")){
-//
-//                //Decreases health by a 1/16 of the maximum
-//                    dealDamage((int) (getHealthStat()*(1.0/16)));
-//
-//                //Sets attack stat to half of what it was
-//                    setCurrentAttack(attackStat/2);
-//
-//            } else if(getStatus().equalsIgnoreCase("Frozen")){
-//
-//                //In the real game an attack would not have occurred, instead we just set the attack to zero
-//                    setCurrentAttack(0);
-//                    setCurrentSpecialAttack(0);
-//            } else if(getStatus().equalsIgnoreCase("Paralyzed")){
-//
-//                //Reduces speed by 1/4
-//                    setCurrentSpeed((int) (speedStat*(1.0/4)));
-//
-//                //Random
-//                    Random rn=new Random();
-//
-//                //See if the Pokémon is stuned
-//                    int stun=rn.nextInt(100);
-//
-//                    if(stun>75){
-//                        //In the real game an attack would not have occurred, instead we just set the attack to zero
-//                            setCurrentAttack(0);
-//                            setCurrentSpecialAttack(0);
-//                    }
-//            } else if(getStatus().equalsIgnoreCase("Asleep")){
-//                //Random
-//                    Random rn=new Random();
-//
-//                //See if the Pokémon is stunned
-//                    int stun=rn.nextInt(100);
-//
-//                    if(stun>75){
-//                        //In the real game an attack would not have occurred, instead we just set the attack to zero
-//                            setCurrentAttack(0);
-//                            setCurrentSpecialAttack(0);
-//
-//                        //Sleep ends after this effect
-//                            setStatus("none");
-//                    }
-//            }
-
         // Adjusted calcStatusDamage() to be a switch statement for better presentation
         // and easier access.
         switch (status){
@@ -635,8 +583,10 @@ public class Pokemon {
             //For loop to go through and find the value that matches the type
                 for(int i=0;i<typeChart.size();i++){
 
+                    String type=typeChart.get(i).getFirst();
+
                     //First value is the string type
-                        if(typeChart.get(i).getFirst().equalsIgnoreCase(moveType)){
+                       if(type.equalsIgnoreCase(moveType)){
                             moveTypeNum=i;
                         }
                 }

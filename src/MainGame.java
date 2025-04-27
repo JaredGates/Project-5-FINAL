@@ -95,10 +95,6 @@ public class MainGame {
                     int sAttackStat = parseInt(lineScan.next());
                     int sDefenceStat = parseInt(lineScan.next());
                     int speedStat = parseInt(lineScan.next());
-//                    String move1=lineScan.next();
-//                    String move2=lineScan.next();
-//                    String move3=lineScan.next();
-//                    String move4=lineScan.next();
 
                     String move1="Attack";
                     String move2="Special";
@@ -119,74 +115,6 @@ public class MainGame {
         //Return
             return newDatabaseEntry;
     }
-
-//    /**
-//     * This method will go through all the moves any Pokémon can know
-//     * @return a hashmap containing all moves
-//     * @throws FileNotFoundException if file not found
-//     */
-//    public static HashMap<String, Move> importMoves() throws FileNotFoundException {
-//        //Scanner for file
-//            Scanner fileScan = new Scanner(new File("Something"));
-//            fileScan.nextLine();
-//
-//        //Hashmap containing all moves used for Pokémon in the dex
-//            HashMap<String, Move> newMovesEntry = new HashMap<>();
-//
-//        //While loop to get all data from the moves file
-//            while (fileScan.hasNext()) {
-//
-//                //Make a new scanner for each line in the file to scan individually with a comma delimiter
-//                    String newLine=fileScan.nextLine();
-//                    Scanner lineScan = new Scanner(newLine);
-//                    lineScan.useDelimiter(",");
-//
-//                //Get the name of the move and the type the move is
-//                    String moveName=lineScan.next();
-//                    String typeOfMove=lineScan.next();
-//
-//                //Empty Move object
-//                    Move tempMove;
-//
-//                //Decision statement for each type of move making a different kind of Move object
-//                    if(typeOfMove.equalsIgnoreCase("Attack")) {
-//                        //Get data for an attack move
-//                            String type = lineScan.next();
-//                            double accuracy=lineScan.nextDouble();
-//                            int power = lineScan.nextInt();
-//
-//                        //Make the Move object
-//                            tempMove=new AttackMove(moveName, accuracy, type, power);
-//
-//                    } else if(typeOfMove.equalsIgnoreCase("Status")){
-//                        //Get data for a status move
-//                            String type = lineScan.next();
-//                            double accuracy=lineScan.nextDouble();
-//                            String status=lineScan.next();
-//                            double statusChance=lineScan.nextDouble();
-//
-//                        //Create a new Move
-//                            tempMove=new StatusMove(moveName, accuracy, type, status, statusChance);
-//
-//                    } else {
-//                        //Get data for a special
-//                            String type = lineScan.next();
-//                            double accuracy=lineScan.nextDouble();
-//                            int power = lineScan.nextInt();
-//                            String status=lineScan.next();
-//                            double statusChance=lineScan.nextDouble();
-//
-//                        //Create a new Move
-//                            tempMove=new SpecialMove(moveName, accuracy, type, status, statusChance, power);
-//                    }
-//
-//                //Add entry into the hashmap
-//                    newMovesEntry.put(moveName, tempMove);
-//            }
-//
-//        //Return
-//            return newMovesEntry;
-//    }
 
     /**
      * This method will check to see if a player has won the game, if they have not then it will return false,
@@ -212,16 +140,9 @@ public class MainGame {
         //Scanner for user input
             Scanner sc=new Scanner(System.in);
 
-        //Random
-            Random rn=new Random();
-
         //Damage variable
             int damage = 0;
             int threshold=0;
-
-        //Read in all the moves
-//            HashMap<String, Move> movesList=importMoves();
-
 
         //Main loop for the game
             while(!playerWon(player1, player2)) {
@@ -372,8 +293,10 @@ public class MainGame {
             player2.dealDamage(damage);
 
             //Print statement to recognise that a player has taken damage
+            System.out.println("\t"+ player1.getName()+" used "+move.getNameOfMove());
             System.out.println("\t" + player2.getName() + " took " + damage + " damage\n");
         } else {
+            System.out.println("\t"+ player2.getName()+" used "+move.getNameOfMove());
             System.out.println("\tThe move doesn't work...\n");
         }
     }
@@ -390,8 +313,10 @@ public class MainGame {
             player2.dealDamage(damage);
 
             //Print statement to recognise that a player has taken damage
+            System.out.println("\t"+ player1.getName()+" used "+move.getNameOfMove());
             System.out.println("\t" + player2.getName() + " took " + damage + " damage\n");
         } else {
+            System.out.println("\t"+ player2.getName()+" used "+move.getNameOfMove());
             System.out.println("\tThe move doesn't work...\n");
         }
 
@@ -399,6 +324,7 @@ public class MainGame {
 
         if(threshold<move.getStatusChance()){
             player2.setStatus(move.getStatus());
+            System.out.println("\t"+ player2.getName()+" used "+move.getNameOfMove());
             System.out.println("\t"+player2.getName()+" has been "+move.getStatus());
         }
     }
@@ -410,39 +336,15 @@ public class MainGame {
 
         if(threshold<move.getStatusChance()){
             player2.setStatus(move.getStatus());
+            System.out.println("\t"+ player1.getName()+" used "+move.getNameOfMove());
             System.out.println("\t"+player2.getName()+" has been "+move.getStatus());
         }
     }
 
     public static void makeProtection(Pokemon player1){
+        System.out.println("\t"+ player1.getName()+" used Protection");
         player1.setCurrentDefence(500);
         player1.setCurrentSpecialDefence(500);
         player1.setCurrentSpeed(500);
     }
-
-
-    //use conditionCheck method to make it so that the pokemon can have a status effect.
-
-//    /**
-//     * This method will see if a Pokémon will get effected my a status effect
-//     * @param mon Pokémon potentially being effected
-//     * @param moveUsed move that was used to deal and effect
-//     */
-//    public static void conditionCheck(Pokemon mon, StatusMove moveUsed) {
-//        //Decision statement to see if the Pokémon even needs to have an effect done to him
-//            if (!mon.getStatus().equals("none")) {
-//                mon.setStatus("none");
-//            } else {
-//                //See if the effect triggers
-//                    Random rn = new Random();
-//                    int trigger = rn.nextInt(100);
-//
-//                //Decision statement to see if an effect it triggers
-//                    if (trigger > moveUsed.getStatusChance()) {
-//                        mon.setStatus(moveUsed.getStatus());
-//                    } else {
-//                        mon.setStatus("none");
-//                    }
-//            }
-//    }
 }
