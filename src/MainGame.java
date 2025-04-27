@@ -22,11 +22,11 @@ public class MainGame {
 
         //Get two random numbers for the two Pokémon that will be used
             Random rn=new Random();
-//            int PokeRandomNum1=rn.nextInt(1, database.size()+1);
-//            int PokeRandomNum2=rn.nextInt(1, database.size()+1);
+            int PokeRandomNum1=rn.nextInt(1, database.size()+1);
+            int PokeRandomNum2=rn.nextInt(1, database.size()+1);
 
-            int PokeRandomNum1=13;
-            int PokeRandomNum2=81;
+//            int PokeRandomNum1=13;
+//            int PokeRandomNum2=81;
 
         //Create the two Pokémon based on the numbers gotten from the random number
             Pokemon Poke1=database.get(PokeRandomNum1);
@@ -120,74 +120,6 @@ public class MainGame {
             return newDatabaseEntry;
     }
 
-//    /**
-//     * This method will go through all the moves any Pokémon can know
-//     * @return a hashmap containing all moves
-//     * @throws FileNotFoundException if file not found
-//     */
-//    public static HashMap<String, Move> importMoves() throws FileNotFoundException {
-//        //Scanner for file
-//            Scanner fileScan = new Scanner(new File("Something"));
-//            fileScan.nextLine();
-//
-//        //Hashmap containing all moves used for Pokémon in the dex
-//            HashMap<String, Move> newMovesEntry = new HashMap<>();
-//
-//        //While loop to get all data from the moves file
-//            while (fileScan.hasNext()) {
-//
-//                //Make a new scanner for each line in the file to scan individually with a comma delimiter
-//                    String newLine=fileScan.nextLine();
-//                    Scanner lineScan = new Scanner(newLine);
-//                    lineScan.useDelimiter(",");
-//
-//                //Get the name of the move and the type the move is
-//                    String moveName=lineScan.next();
-//                    String typeOfMove=lineScan.next();
-//
-//                //Empty Move object
-//                    Move tempMove;
-//
-//                //Decision statement for each type of move making a different kind of Move object
-//                    if(typeOfMove.equalsIgnoreCase("Attack")) {
-//                        //Get data for an attack move
-//                            String type = lineScan.next();
-//                            double accuracy=lineScan.nextDouble();
-//                            int power = lineScan.nextInt();
-//
-//                        //Make the Move object
-//                            tempMove=new AttackMove(moveName, accuracy, type, power);
-//
-//                    } else if(typeOfMove.equalsIgnoreCase("Status")){
-//                        //Get data for a status move
-//                            String type = lineScan.next();
-//                            double accuracy=lineScan.nextDouble();
-//                            String status=lineScan.next();
-//                            double statusChance=lineScan.nextDouble();
-//
-//                        //Create a new Move
-//                            tempMove=new StatusMove(moveName, accuracy, type, status, statusChance);
-//
-//                    } else {
-//                        //Get data for a special
-//                            String type = lineScan.next();
-//                            double accuracy=lineScan.nextDouble();
-//                            int power = lineScan.nextInt();
-//                            String status=lineScan.next();
-//                            double statusChance=lineScan.nextDouble();
-//
-//                        //Create a new Move
-//                            tempMove=new SpecialMove(moveName, accuracy, type, status, statusChance, power);
-//                    }
-//
-//                //Add entry into the hashmap
-//                    newMovesEntry.put(moveName, tempMove);
-//            }
-//
-//        //Return
-//            return newMovesEntry;
-//    }
-
     /**
      * This method will check to see if a player has won the game, if they have not then it will return false,
      * otherwise return true.
@@ -225,9 +157,9 @@ public class MainGame {
 
         //Main loop for the game
             while(!playerWon(player1, player2)) {
-                String moveNameP1=playerChoice(player1, sc);
+                String moveNameP1=playerChoice(player1, sc, "Player 1");
 
-                String moveNameP2=playerChoice(player2, sc);
+                String moveNameP2=playerChoice(player2, sc, "Player 2");
 
                 Move move1=makeMove(moveNameP1, player1);
 
@@ -284,10 +216,11 @@ public class MainGame {
             }
     }
 
-    public static String playerChoice(Pokemon player, Scanner sc){
+    public static String playerChoice(Pokemon player, Scanner sc, String playerName){
         System.out.println("\n" + player.getName() + "'s health is " + player.getCurrentHealth());
-        System.out.println("What move does player 1 want to use? ");
+        System.out.println("What move does " + playerName + " want to use? ");
         System.out.println("Your moves are " + player.getMove1() + ", " + player.getMove2() + ", " + player.getMove3() + ", " + player.getMove4());
+        System.out.print(playerName + ", make your move: ");
         String moveNameP1 = sc.nextLine();
 
         //Check for incorrect input
