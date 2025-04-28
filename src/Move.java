@@ -8,10 +8,10 @@
 
 public abstract class Move {
     //Variables
-    private String name;
-    private double accuracy;
-    private String type;
-    private String typeOfMove;
+        private String name;
+        private double accuracy;
+        private String type;
+        private String typeOfMove;
 
     /**
      * Constructor

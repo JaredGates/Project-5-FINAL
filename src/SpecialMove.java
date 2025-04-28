@@ -9,9 +9,9 @@
 
 public class SpecialMove extends Move {
     //Variables
-    private int power;
-    private String status;
-    private double statusChance;
+        private int power;
+        private String status;
+        private double statusChance;
 
     public SpecialMove(String name, double accuracy, String type, String status, double statusChance, int power){
         super(name, accuracy, type, "Special");

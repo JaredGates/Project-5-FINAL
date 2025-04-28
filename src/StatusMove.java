@@ -8,8 +8,8 @@
 
 public class StatusMove extends Move {
     //Variables
-    private String status;
-    private double statusChance;
+        private String status;
+        private double statusChance;
 
     public StatusMove(String name, double accuracy, String type, String status, double statusChance){
         super(name, accuracy, type, "Status");
