@@ -1,5 +1,4 @@
-"Defense ->
-Attack \/",Normal,Fire,Water,Electric,Grass,Ice,Fighting,Poison,Ground,Flying,Psychic,Bug,Rock,Ghost,Dragon
+D/A,Normal,Fire,Water,Electric,Grass,Ice,Fighting,Poison,Ground,Flying,Psychic,Bug,Rock,Ghost,Dragon
 Normal,1x,1x,1x,1x,1x,1x,1x,1x,1x,1x,1x,1x,1/2x,0x,1x
 Fire,1x,1/2x,1/2x,1x,2x,2x,1x,1x,1x,1x,1x,2x,1/2x,1x,1/2x
 Water,1x,2x,1/2x,1x,1/2x,1x,1x,1x,2x,1x,1x,1x,2x,1x,1/2x

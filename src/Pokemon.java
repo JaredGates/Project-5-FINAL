@@ -583,8 +583,10 @@ public class Pokemon {
             //For loop to go through and find the value that matches the type
                 for(int i=0;i<typeChart.size();i++){
 
+                    String type=typeChart.get(i).getFirst();
+
                     //First value is the string type
-                        if(typeChart.get(i).getFirst().equalsIgnoreCase(moveType)){
+                       if(type.equalsIgnoreCase(moveType)){
                             moveTypeNum=i;
                         }
                 }
