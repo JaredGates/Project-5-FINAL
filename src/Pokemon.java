@@ -479,7 +479,7 @@ public class Pokemon {
                     damage=damage*crit;
                     damage=damage/5;
                     damage=damage+2;
-                    damage=damage* ((AttackMove) moveUsed).getPower();
+                    damage=damage* ((SpecialMove) moveUsed).getPower();
                     damage= (int) (damage*((double)this.getCurrentAttack()/(double)other.getCurrentDefence()));
                     damage=damage/50;
                     damage=damage+2;
