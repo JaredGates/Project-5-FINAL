@@ -34,11 +34,4 @@ public class StatusMove extends Move {
         return statusChance;
     }
 
-    /**
-     * Returns if the status was afflicted or not
-     * @return boolean
-     */
-    public boolean statusAfflict(){
-        return false;
-    }
 }
