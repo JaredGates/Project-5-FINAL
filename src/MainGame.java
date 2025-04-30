@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+
 import static java.lang.Integer.parseInt;
 
 /**
@@ -13,22 +14,23 @@ import static java.lang.Integer.parseInt;
 public class MainGame {
     public static void main(String[] args) throws FileNotFoundException {
 
-        //Get data into the hashmap
+        try {
+            //Get data into the hashmap
             HashMap<Integer, Pokemon> database;
-            database=importCSVFile();
+            database = importCSVFile();
 
-        // Scanner to get input
+            // Scanner to get input
             Scanner scanner = new Scanner(System.in);
 
-        //Random number generator to generate random Pokemon between bounds
-            Random rn=new Random();
+            //Random number generator to generate random Pokemon between bounds
+            Random rn = new Random();
 
-        // Get a list of all available keys in database
-        List<Integer> allKeys = new ArrayList<>(database.keySet());
+            // Get a list of all available keys in database
+            List<Integer> allKeys = new ArrayList<>(database.keySet());
 
-        // Start of program dialogue
-        System.out.println("Welcome to the Pokemon 1v1 Battle Simulator");
-        System.out.println("Please select one of the following options to begin: ");
+            // Start of program dialogue
+            System.out.println("Welcome to the Pokemon 1v1 Battle Simulator");
+            System.out.println("Please select one of the following options to begin: ");
 
         // Get player 1's pokemon
         int PokeNum1 = getPokemon(1, scanner, rn, allKeys);
@@ -52,31 +54,34 @@ public class MainGame {
         //Output for Pokemon generation for player 1
             System.out.println("Player 1 has gotten the Pokémon: "+Poke1.getName()+" (DEX# " + PokeNum1 +")");
 
-        //Output for types of player 1s Pokemon
-            if(Poke1.getType2() == null){
-                    System.out.println("Its type(s) are"+Poke1.getType1());
-                } else {
-                    System.out.println("Its type(s) are "+Poke1.getType1()+" "+Poke1.getType2());
-                }
-        System.out.println();
+            //Output for types of player 1s Pokemon
+            if (Poke1.getType2() == null) {
+                System.out.println("Its type(s) are" + Poke1.getType1());
+            } else {
+                System.out.println("Its type(s) are " + Poke1.getType1() + " " + Poke1.getType2());
+            }
+            System.out.println();
 
         //Output for Pokemon generation for player 2
             System.out.println("Player 2 has gotten the Pokémon: "+Poke2.getName()+" (DEX# " + PokeNum2 +")");
 
-        //Output for types of player 2s Pokemon
-            if(Poke2.getType2() == null){
-                    System.out.println("Its type(s) are"+Poke2.getType1());
-                } else {
-                    System.out.println("Its type(s) are "+Poke2.getType1()+" "+Poke2.getType2());
-                }
-        System.out.println();
+            //Output for types of player 2s Pokemon
+            if (Poke2.getType2() == null) {
+                System.out.println("Its type(s) are" + Poke2.getType1());
+            } else {
+                System.out.println("Its type(s) are " + Poke2.getType1() + " " + Poke2.getType2());
+            }
+            System.out.println();
 
-        //Call the game loop method and run the game
+            //Call the game loop method and run the game
             Pokemon winningPlayer;
-            winningPlayer=gameLoop(Poke1, Poke2);
+            winningPlayer = gameLoop(Poke1, Poke2);
 
-        //Output for the player who won.
-            System.out.println(winningPlayer.getName()+" has won!");
+            //Output for the player who won.
+            System.out.println(winningPlayer.getName() + " has won!");
+        } catch (FileNotFoundException e){
+            System.out.println("ERROR: File was not found, ending program.");
+        }
     }
 
     public static int getPokemon(int playerNum, Scanner scanner, Random rn, List<Integer> allKeys) throws FileNotFoundException {
