@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
-
 import static java.lang.Integer.parseInt;
 
 /**
@@ -31,16 +30,27 @@ public class MainGame {
         System.out.println("Welcome to the Pokemon 1v1 Battle Simulator");
         System.out.println("Please select one of the following options to begin: ");
 
-        // Get both players pokemon
-        int PokeRandomNum1 = getPokemon(1, scanner, rn, allKeys);
-        int PokeRandomNum2 = getPokemon(2, scanner, rn, allKeys);
+        // Get player 1's pokemon
+        int PokeNum1 = getPokemon(1, scanner, rn, allKeys);
+
+        // Get player 2's pokemon + check if they are the same
+        int PokeNum2;
+        while (true){
+            PokeNum2 = getPokemon(2, scanner, rn, allKeys);
+            if (PokeNum2 == PokeNum1){
+                System.out.println("ERROR: Both players cannot have the same Pokemon. Player 2, please select a new one.");
+            } else {
+                break;
+            }
+        }
+
 
         // Create Pokemon objects
-        Pokemon Poke1 = database.get(PokeRandomNum1);
-        Pokemon Poke2 = database.get(PokeRandomNum2);
+        Pokemon Poke1 = database.get(PokeNum1);
+        Pokemon Poke2 = database.get(PokeNum2);
 
         //Output for Pokemon generation for player 1
-            System.out.println("Player 1 has gotten the Pokémon: "+Poke1.getName()+" (DEX# " +PokeRandomNum1+")");
+            System.out.println("Player 1 has gotten the Pokémon: "+Poke1.getName()+" (DEX# " + PokeNum1 +")");
 
         //Output for types of player 1s Pokemon
             if(Poke1.getType2() == null){
@@ -51,7 +61,7 @@ public class MainGame {
         System.out.println();
 
         //Output for Pokemon generation for player 2
-            System.out.println("Player 2 has gotten the Pokémon: "+Poke2.getName()+" (DEX# " +PokeRandomNum2+")");
+            System.out.println("Player 2 has gotten the Pokémon: "+Poke2.getName()+" (DEX# " + PokeNum2 +")");
 
         //Output for types of player 2s Pokemon
             if(Poke2.getType2() == null){
