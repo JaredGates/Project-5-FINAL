@@ -41,7 +41,6 @@ public class MainGame {
             String player1Input = scanner.next();
             System.out.println();
 
-
             if (player1Input.equals("1")){
                 int randomIndex1 = rn.nextInt(allKeys.size());
                 PokeRandomNum1 = allKeys.get(randomIndex1);
@@ -56,7 +55,6 @@ public class MainGame {
             }
         }
 
-        // Player 2 input
         int PokeRandomNum2 = 0;
         while (true) {
             System.out.println("Player 2, do you want to: ");
