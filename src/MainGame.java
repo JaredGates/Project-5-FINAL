@@ -287,6 +287,16 @@ public class MainGame {
                 //Empty print
                     System.out.println();
 
+                //Effect speed if a player chooses the Protection move
+                    if(move1.getTypeOfMove().equalsIgnoreCase("Protection")){
+                        player1.setCurrentSpeed(500);
+                    }
+
+                    if(move2.getTypeOfMove().equalsIgnoreCase("Protection")){
+                        player2.setCurrentSpeed(500);
+                    }
+
+
                 //Decision statement to see which player goes first
                     if (player1.getSpeedStat() > player2.getSpeedStat() && !playerWon(player1, player2)) {
 
@@ -296,29 +306,34 @@ public class MainGame {
                         //Checking to make sure the damage done did not kill the other player, otherwise a dead Pokémon would be able to do damage
                             if (!playerWon(player1, player2)) {
 
-                                //Player 2 deals damage and causes status effects
+                                //Player 2 deals damage and causes status effects I.E. uses their move
                                 moveChoice(player2, player1, move2);
 
                             }
                    } else if (player2.getSpeedStat() > player1.getSpeedStat() && !playerWon(player1, player2)) {
 
-                        moveChoice(player2, player1, move2);
-
-                        if (!playerWon(player1, player2)) {
-
-                            moveChoice(player1, player2, move1);
-                        }
-
-                    } else {
-                        //FAIL STATE INCASE A PLAYER CANNOT BE PICKED, PLAYER 1 WILL GO FIRST
-                        moveChoice(player1, player2, move1);
-
-                        //Checking to make sure the damage done did not kill the other player, otherwise a dead Pokémon would be able to do damage
-                        if (!playerWon(player1, player2)) {
-
+                        //Player 2 deals damage and causes status effects I.E. uses their move
                             moveChoice(player2, player1, move2);
 
-                        }
+                        //Checking to make sure the damage done did not kill the other player, otherwise a dead Pokémon would be able to do damage
+                            if (!playerWon(player1, player2)) {
+
+                                //Player 1 deals damage and causes status effects I.E. uses their move
+                                    moveChoice(player1, player2, move1);
+                            }
+
+                    } else {
+                        //FAIL STATE INCASE A PLAYER CANNOT BE PICKED (I.E. both Pokemon have the same speed, PLAYER 1 WILL GO FIRST
+
+                        //Player 1 deals damage and causes status effects I.E. uses their move
+                            moveChoice(player1, player2, move1);
+
+                        //Checking to make sure the damage done did not kill the other player, otherwise a dead Pokémon would be able to do damage
+                            if (!playerWon(player1, player2)) {
+
+                                //Player 2 deals damage and causes status effects I.E. uses their move
+                                    moveChoice(player2, player1, move2);
+                            }
                     }
 
                     //Reset stats as to not have stacking effects of stats
@@ -326,163 +341,293 @@ public class MainGame {
                         player2.statusReset();
             }
 
-            if(player1.getCurrentHealth()<0){
-                return player2;
-            } else {
-                return player1;
-            }
+            //Returns the won player at the end of the game
+                if(player1.getCurrentHealth()<0){
+                    return player2;
+                } else {
+                    return player1;
+                }
     }
 
+    /**
+     * This method will take in user input and then check to make sure that the input is correct with in the correct
+     * options displayed to the user.
+     * @param player, Pokemon the player is using, used to get the name of the Pokemon and moves of Pokemon
+     * @param sc, Scanner
+     * @param playerName, Name of the player, either player 1 or player 2
+     * @return a String of the move name after it has been checked.
+     */
     public static String playerChoice(Pokemon player, Scanner sc, String playerName){
-        System.out.println("\n" + player.getName() + "'s health is " + player.getCurrentHealth());
-        System.out.println("What move does " + playerName + " want to use? ");
-        System.out.println("Your moves are " + player.getMove1() + ", " + player.getMove2() + ", " + player.getMove3() + ", " + player.getMove4());
-        System.out.print(playerName + ", make your move: ");
-        String moveNameP1 = sc.nextLine();
+
+        //Output for user information such as health and moves available
+            System.out.println("\n" + player.getName() + "'s health is " + player.getCurrentHealth());
+            System.out.println("What move does " + playerName + " want to use? ");
+            System.out.println("Your moves are " + player.getMove1() + ", " + player.getMove2() + ", " + player.getMove3() + ", " + player.getMove4());
+            System.out.print(playerName + ", make your move: ");
+
+        //User Input for attack name.
+            String moveNameP1 = sc.nextLine();
 
         //Check for incorrect input
-        while(!(moveNameP1.equalsIgnoreCase("attack")||moveNameP1.equalsIgnoreCase("special")||moveNameP1.equalsIgnoreCase("status")||moveNameP1.equalsIgnoreCase("Protection"))){
-            System.out.println("ERROR: incorrect input retry, moves are:");
-            System.out.println(player.getMove1() + ", " + player.getMove2() + ", " + player.getMove3() + ", " + player.getMove4());
-            moveNameP1=sc.nextLine();
-        }
+            while(!(moveNameP1.equalsIgnoreCase("attack")||moveNameP1.equalsIgnoreCase("special")||moveNameP1.equalsIgnoreCase("status")||moveNameP1.equalsIgnoreCase("Protection"))){
 
-        return moveNameP1;
+                //Retry statement
+                    System.out.println("ERROR: incorrect input retry, moves are:");
+                    System.out.println(player.getMove1() + ", " + player.getMove2() + ", " + player.getMove3() + ", " + player.getMove4());
+
+                //User Input for attack name.
+                    moveNameP1=sc.nextLine();
+            }
+
+        //Return
+            return moveNameP1;
     }
 
+    /**
+     * This method will make the move with the given information, using casting to change the Move object given
+     * to a specific child class
+     * @param moveName, name of the move given, can be obtained from player choice
+     * @param player, Pokemon that is going to be using the move
+     * @return a Move which is specifically done for each type of move
+     */
     public static Move makeMove(String moveName, Pokemon player){
-        Random rn=new Random();
 
-        Move move;
+        //Random
+            Random rn=new Random();
 
-        if(moveName.equalsIgnoreCase("Attack")){
-            move=new AttackMove(moveName,90,player.getType1(),100);
-        } else if(moveName.equalsIgnoreCase("Special")){
+        //Default constructor for Move
+            Move move;
 
-            String status="none";
-            int statusNum=rn.nextInt(5);
+        //Decision statement to determine what type of "move" the variable move will be.
+            if(moveName.equalsIgnoreCase("Attack")){
 
-            if(statusNum==0){
-                status="Poisoned";
-            } else if(statusNum==1){
-                status="Burned";
-            } else if(statusNum==2){
-                status="Asleep";
-            } else if(statusNum==3){
-                status="Frozen";
+                //Make a new Move object with teh AttackMove type
+                    move=new AttackMove(moveName,90,player.getType1(),100);
+
+            } else if(moveName.equalsIgnoreCase("Special")){
+
+                //String for the status of the SpecialMove
+                    String status="none";
+
+                //Generates a random int from 0 to 4
+                    int statusNum=rn.nextInt(5);
+
+                //Decision statement based on the randomly generated number from before, then changes status
+                //to the value determined below
+                    if(statusNum==0){
+                        status="Poisoned";
+                    } else if(statusNum==1){
+                        status="Burned";
+                    } else if(statusNum==2){
+                        status="Asleep";
+                    } else if(statusNum==3){
+                        status="Frozen";
+                    } else {
+                        status="Paralyzed";
+                    }
+
+                //Make a new Move object with the SpecialMove type
+                    move=new SpecialMove(moveName,70,player.getType1(),status,25, 70);
+
+            } else if(moveName.equalsIgnoreCase("Status")){
+
+                //String for the status of the StatusMove
+                    String status="none";
+
+                //Generates a random int from 0 to 4
+                    int statusNum=rn.nextInt(5);
+
+                //Decision statement based on the randomly generated number from before, then changes status
+                //to the value determined below
+                    if(statusNum==0){
+                        status="Poisoned";
+                    } else if(statusNum==1){
+                        status="Burned";
+                    } else if(statusNum==2){
+                        status="Asleep";
+                    } else if(statusNum==3){
+                        status="Frozen";
+                    } else {
+                        status="Paralyzed";
+                    }
+
+                //Make a new Move object with the StatusMove type
+                    move=new StatusMove(moveName, 90, player.getType1(), status, 75);
+
             } else {
-                status="Paralyzed";
+
+                //Make a new Move object with the ProtectionMove type
+                    move=new ProtectionMove(moveName, 100, player.getType1());
             }
 
-            move=new SpecialMove(moveName,70,player.getType1(),status,25, 70);
-
-        } else if(moveName.equalsIgnoreCase("Status")){
-            String status="none";
-            int statusNum=rn.nextInt(5);
-
-            if(statusNum==0){
-                status="Poisoned";
-            } else if(statusNum==1){
-                status="Burned";
-            } else if(statusNum==2){
-                status="Asleep";
-            } else if(statusNum==3){
-                status="Frozen";
-            } else {
-                status="Paralyzed";
-            }
-
-            move=new StatusMove(moveName, 80, player.getType1(), status, 75);
-        } else {
-            move=new ProtectionMove(moveName, 100, player.getType1());
-        }
-
-        return move;
+        //Return
+            return move;
     }
 
+    /**
+     * This method will take the two players and deal damage or status effects to the other using the move given
+     * Note: each of the attacks are separated into their own method for easier readability and for casting of the Move object
+     * @param player1, Player making the move
+     * @param player2, Player being dealt the move
+     * @param move, move used by player 1
+     * @throws FileNotFoundException
+     */
     public static void moveChoice(Pokemon player1, Pokemon player2, Move move) throws FileNotFoundException {
-        if(move.getTypeOfMove().equalsIgnoreCase("Attack")) {
-            makeAttack(player1, player2, (AttackMove)move);
-        }else if(move.getTypeOfMove().equalsIgnoreCase("Special")){
-            makeSpecial(player1, player2, (SpecialMove)move);
-        }else if(move.getTypeOfMove().equalsIgnoreCase("Status")){
-            makeStatus(player1, player2, (StatusMove)move);
-        }else if(move.getTypeOfMove().equalsIgnoreCase("Protection")){
-            makeProtection(player1);
-        }
+
+        //Decision statement to get the specific type fo move and specific method to go along with it
+            if(move.getTypeOfMove().equalsIgnoreCase("Attack")) {
+                makeAttack(player1, player2, (AttackMove)move);
+            }else if(move.getTypeOfMove().equalsIgnoreCase("Special")){
+                makeSpecial(player1, player2, (SpecialMove)move);
+            }else if(move.getTypeOfMove().equalsIgnoreCase("Status")){
+                makeStatus(player1, player2, (StatusMove)move);
+            }else if(move.getTypeOfMove().equalsIgnoreCase("Protection")){
+                makeProtection(player1);
+            }
     }
 
+    /**
+     * Make an Attack move using the two players and the move given.
+     * @param player1, Player making the AttackMove
+     * @param player2, Player receiving damage
+     * @param move, move Player 1 is using
+     * @throws FileNotFoundException
+     */
     public static void makeAttack(Pokemon player1, Pokemon player2, AttackMove move) throws FileNotFoundException {
-        Random rn=new Random();
+        //Random
+            Random rn=new Random();
 
-        int damage=0;
-        int threshold = rn.nextInt(100);
+        //Variables to hold damage and threshold value which is used for random chance.
+            int damage=0;
+            int threshold = rn.nextInt(100);
 
-        System.out.println("\t"+ player1.getName()+" used "+move.getNameOfMove());
+        //Print out the name of the move used
+            System.out.println("\t"+ player1.getName()+" used "+move.getNameOfMove());
 
-        //Player 1 has gone first so player 2 is dealt damage by player 1 first
-        if (threshold < move.getAccuracy()) {
-            damage = (player1.calcDamage(move, player2));
-            player2.dealDamage(damage);
+        //Player 1 will deal damage to Player 2 (NOTE: Player 1 and Player 2 are not the actual players but the order
+        //they were put into the method
+            if (threshold < move.getAccuracy()) {
 
-            //Print statement to recognise that a player has taken damage
-            System.out.println("\t" + player2.getName() + " took " + damage + " damage\n");
-        } else {
-            System.out.println("\tThe move doesn't work...\n");
-        }
+                //Calculate damage
+                    damage = (player1.calcDamage(move, player2));
+
+                //Deal damage
+                    player2.dealDamage(damage);
+
+                //Print statement to recognise that a player has taken damage
+                    System.out.println("\t" + player2.getName() + " took " + damage + " damage\n");
+
+            } else {
+                //Print statement to recognise that the move did not work
+                    System.out.println("\tThe move doesn't work...\n");
+            }
     }
 
+    /**
+     * Make a Special move using the two players and the move given, deals less damage but can have a chance to deal a
+     * status effect.
+     * @param player1, Player making the SpecialMove
+     * @param player2, Player receiving damage
+     * @param move, move Player 1 is using
+     * @throws FileNotFoundException
+     */
     public static void makeSpecial(Pokemon player1, Pokemon player2, SpecialMove move) throws FileNotFoundException {
-        Random rn=new Random();
+        //Random
+            Random rn=new Random();
 
-        int damage=0;
-        int threshold = rn.nextInt(100);
+        //Variables to hold damage and threshold value which is used for random chance.
+            int damage=0;
+            int threshold = rn.nextInt(100);
 
-        System.out.println("\t"+ player1.getName()+" used "+move.getNameOfMove());
+        //Print out the name of the move used
+            System.out.println("\t"+ player1.getName()+" used "+move.getNameOfMove());
 
-        //Player 1 has gone first so player 2 is dealt damage by player 1 first
-        if (threshold < move.getAccuracy()) {
-            damage = (player1.calcDamage(move, player2));
-            player2.dealDamage(damage);
+        //Player 1 will deal damage to Player 2 (NOTE: Player 1 and Player 2 are not the actual players but the order
+        //they were put into the method.)
+            if (threshold < move.getAccuracy()) {
 
-            //Print statement to recognise that a player has taken damage
-            System.out.println("\t" + player2.getName() + " took " + damage + " damage");
+                //Calculate damage
+                    damage = (player1.calcDamage(move, player2));
+
+                //Deal damage
+                    player2.dealDamage(damage);
+
+                //Print statement to recognise that a player has taken damage
+                    System.out.println("\t" + player2.getName() + " took " + damage + " damage\n");
 
 
-            threshold=rn.nextInt(100);
+                //Create a random number from 0 to 99 which is used for a random chance
+                    threshold=rn.nextInt(100);
 
-            if(threshold<move.getStatusChance()){
-                player2.setStatus(move.getStatus());
-                System.out.println("\t"+player2.getName()+" has been "+move.getStatus()+"\n");
+                //Decision statement to see if the status effect goes through
+                    if(threshold<move.getStatusChance()){
+
+                        //Put a status on Player 2
+                            player2.setStatus(move.getStatus());
+
+                        //Print statement to recognise that a player has been afflicted with a status effect
+                            System.out.println("\t"+player2.getName()+" has been "+move.getStatus()+"\n");
+
+                    } else {
+                        //Print statement to recognise that a player has been afflicted with a status effect
+                            System.out.println("\tNo status effect dealt...\n");
+                    }
+
             } else {
-                System.out.println("\tNo status effect dealt...\n");
+                //Print statement to recognise that the move did not work
+                    System.out.println("\tThe move doesn't work...\n");
             }
 
-        } else {
-            System.out.println("\tThe move doesn't work...");
-        }
-
 
     }
 
+    /**
+     * Make a Status move using the two players and the move given, more likely to cause a status effect but deals
+     * no damage.
+     * @param player1, Player making the AttackMove
+     * @param player2, Player receiving damage
+     * @param move, move Player 1 is using
+     * @throws FileNotFoundException
+     */
     public static void makeStatus(Pokemon player1, Pokemon player2, StatusMove move){
         Random rn=new Random();
 
+        //Create a random number from 0 to 99 which is used for a random chance
         int threshold=rn.nextInt(100);
 
-        System.out.println("\t"+ player1.getName()+" used "+move.getNameOfMove());
-        if(threshold<move.getStatusChance()){
-            player2.setStatus(move.getStatus());
-            System.out.println("\t"+player2.getName()+" has been "+move.getStatus()+"\n");
-        } else {
-            System.out.println("\tNo status effect dealt...\n");
-        }
+        //Player 1 will deal damage to Player 2 (NOTE: Player 1 and Player 2 are not the actual players but the order
+        //they were put into the method.)
+            if (threshold < move.getAccuracy()) {
+
+                //Decision statement to see if the status effect goes through
+                if (threshold < move.getStatusChance()) {
+
+                    //Put a status on Player 2
+                        player2.setStatus(move.getStatus());
+
+                    //Print statement to recognise that a player has been afflicted with a status effect
+                        System.out.println("\t" + player2.getName() + " has been " + move.getStatus() + "\n");
+
+                } else {
+                    //Print statement to recognise that a player has been afflicted with a status effect
+                        System.out.println("\tNo status effect dealt...\n");
+                }
+            } else {
+                //Print statement to recognise that the move did not work
+                    System.out.println("\tThe move doesn't work...\n");
+            }
     }
 
+    /**
+     * Raises the player's defensive stats
+     * @param player1, player that stats are being raised.
+     */
     public static void makeProtection(Pokemon player1){
-        System.out.println("\t"+ player1.getName()+" used Protection");
-        player1.setCurrentDefence(500);
-        player1.setCurrentSpecialDefence(500);
-        player1.setCurrentSpeed(500);
+        //Print statement to recognise the move
+            System.out.println("\t"+ player1.getName()+" used Protection");
+
+        //Sets defence and special defence 500, this lowers damage from any move most likely to 2
+            player1.setCurrentDefence(500);
+            player1.setCurrentSpecialDefence(500);
     }
 }

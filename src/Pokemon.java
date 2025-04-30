@@ -204,10 +204,17 @@ public class Pokemon {
         return attackStat;
     }
 
+    /**
+     * returns the current defence to the parameter
+     */
     public int getCurrentDefence(){
         return currentDefence;
     }
 
+    /**
+     * Sets the current defence to the newStat received
+     * @param newStat, int
+     */
     public void setCurrentDefence(int newStat){
         currentDefence=newStat;
     }
@@ -244,10 +251,18 @@ public class Pokemon {
         return specialAttackStat;
     }
 
+    /**
+     * returns the current special defence stat
+     * @return int
+     */
     public int getCurrentSpecialDefence(){
         return currentSpecialDefence;
     }
 
+    /**
+     * Sets the current special defence stat to the new stat given
+     * @param newStat, int
+     */
     public void setCurrentSpecialDefence(int newStat){
         currentSpecialDefence=newStat;
     }
@@ -322,7 +337,7 @@ public class Pokemon {
     public int calcDamage(Move moveUsed, Pokemon other) throws FileNotFoundException {
         //Decision statement for each move type
             if (moveUsed.getTypeOfMove().equalsIgnoreCase("Attack")) {
-                //Make the move
+                //Make the Move AttackMove for this specific decision.
                     AttackMove damageMove=(AttackMove)moveUsed;
 
                 //Variables that control damage modifiers
@@ -401,85 +416,95 @@ public class Pokemon {
                         System.out.println("\n\tThis move has no effect...");
                     }
 
-                return damage;
+                //Return
+                    return damage;
 
             } else if (moveUsed.getTypeOfMove().equalsIgnoreCase("Special")) {
-                SpecialMove damageMove=(SpecialMove)moveUsed;
+
+                //Make a Move object that is specifically a SpecialMove
+                    SpecialMove damageMove=(SpecialMove)moveUsed;
 
                 //Variables that control damage modifiers
-                int damage;
-                double STAB;
-                int crit;
-                boolean critMade = false;
-                boolean sameType = false;
-                double type1Effect;
-                double type2Effect;
+                    int damage;
+                    double STAB;
+                    int crit;
+                    boolean critMade = false;
+                    boolean sameType = false;
+                    double type1Effect;
+                    double type2Effect;
 
                 //Get the type effects
-                type1Effect = getTypeEffect(damageMove.getType(), other.getType1());
+                    type1Effect = getTypeEffect(damageMove.getType(), other.getType1());
 
-                if(type2!=null){
-                    type2Effect = getTypeEffect(damageMove.getType(), other.getType2());
-                } else {
-                    type2Effect=1;
-                }
+                    if(type2!=null){
+                        type2Effect = getTypeEffect(damageMove.getType(), other.getType2());
+                    } else {
+                        type2Effect=1;
+                    }
 
                 //Random
-                Random rn = new Random();
+                    Random rn = new Random();
 
                 //Calculation for STAB
-                if (damageMove.getType().equalsIgnoreCase(type1)) {
-                    STAB = 1.5;
-                    sameType = true;
-                } else {
-                    STAB = 1.0;
-                }
-
-                if(type2!=null) {
-                    if (damageMove.getType().equalsIgnoreCase(type2) && !sameType) {
+                    if (damageMove.getType().equalsIgnoreCase(type1)) {
                         STAB = 1.5;
                         sameType = true;
                     } else {
                         STAB = 1.0;
                     }
-                }
+
+                    if(type2!=null) {
+                        if (damageMove.getType().equalsIgnoreCase(type2) && !sameType) {
+                            STAB = 1.5;
+                            sameType = true;
+                        } else {
+                            STAB = 1.0;
+                        }
+                    }
 
 
                 //Calculation for crit
-                int threshold = getSpeedStat() / 2;
+                    int threshold = getSpeedStat() / 2;
 
-                if (rn.nextInt(255) < threshold) {
-                    critMade = true;
-                    crit = 2;
-                } else {
-                    crit = 1;
-                }
+                    if (rn.nextInt(255) < threshold) {
+                        critMade = true;
+                        crit = 2;
+                    } else {
+                        crit = 1;
+                    }
 
                 //In depth calculations for damage
-                double inside1=(((2.0 * 100 * crit) / 5 + 2))*(damageMove.getPower() * ((double) this.getCurrentSpecialAttack() / other.getCurrentSpecialDefence())) /50+2;
-                double outside=STAB * type1Effect * type2Effect;
-
-                //Calculation for damage
-                damage=(int)(inside1*outside);
+                    damage=2;
+                    damage=damage*100;
+                    damage=damage*crit;
+                    damage=damage/5;
+                    damage=damage+2;
+                    damage=damage* ((SpecialMove) moveUsed).getPower();
+                    damage= (int) (damage*((double)this.getCurrentAttack()/(double)other.getCurrentDefence()));
+                    damage=damage/50;
+                    damage=damage+2;
+                    damage= (int) (damage*STAB);
+                    damage= (int) (damage*type1Effect*type2Effect);
 
                 //Recognition for a crit
-                if (critMade) {
-                    System.out.println("\tYou got a crit!");
-                }
+                    if (critMade) {
+                        System.out.println("\tYou got a crit!");
+                    }
 
                 //Recognition for super effective attacks
-                if(type1Effect*type2Effect>2){
-                    System.out.println("\n\tThis move was super effective!");
-                } else if(type1Effect*type2Effect<1){
-                    System.out.println("\n\tThis move was ineffective");
-                } else if(type1Effect*type2Effect==0){
-                    System.out.println("\n\tThis move has no effect...");
-                }
+                    if(type1Effect*type2Effect>2){
+                        System.out.println("\n\tThis move was super effective!");
+                    } else if(type1Effect*type2Effect<1&&type1Effect*type2Effect>0){
+                        System.out.println("\n\tThis move was ineffective");
+                    } else if(type1Effect*type2Effect==0){
+                        System.out.println("\n\tThis move has no effect...");
+                    }
 
-                return damage;
+                //Return
+                    return damage;
             }
 
-        //Return
+        //Return for Status and Protection moves
             return 0;
     }
 
