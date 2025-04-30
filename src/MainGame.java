@@ -32,49 +32,9 @@ public class MainGame {
             System.out.println("Welcome to the Pokemon 1v1 Battle Simulator");
             System.out.println("Please select one of the following options to begin: ");
 
-            // Player 1 input
-            int PokeRandomNum1 = 0;
-            while (true) {
-                System.out.println("Player 1, do you want to: ");
-                System.out.println("   1. Randomize your Pokemon");
-                System.out.println("   2. Select your Pokemon");
-                System.out.print("Your choice: ");
-                String player1Input = scanner.next();
-                System.out.println();
-
-                if (player1Input.equals("1")) {
-                    int randomIndex1 = rn.nextInt(allKeys.size());
-                    PokeRandomNum1 = allKeys.get(randomIndex1);
-                    break;
-                } else if (player1Input.equals("2")) {
-                    PokeRandomNum1 = getPokemonNumber();
-                    break;
-                } else {
-                    System.out.println("ERROR: Invalid input. Please enter either 1 or 2 for your selection.");
-                }
-            }
-
-            int PokeRandomNum2 = 0;
-            while (true) {
-                System.out.println("Player 2, do you want to: ");
-                System.out.println("   1. Randomize your Pokemon");
-                System.out.println("   2. Select your Pokemon");
-                System.out.print("Your choice: ");
-                String player2Input = scanner.next();
-                System.out.println();
-
-
-                if (player2Input.equals("1")) {
-                    int randomIndex2 = rn.nextInt(allKeys.size());
-                    PokeRandomNum2 = allKeys.get(randomIndex2);
-                    break;
-                } else if (player2Input.equals("2")) {
-                    PokeRandomNum2 = getPokemonNumber();
-                    break;
-                } else {
-                    System.out.println("ERROR: Invalid input. Please enter either 1 or 2 for your selection.");
-                }
-            }
+        // Get both players pokemon
+        int PokeRandomNum1 = getPokemon(1, scanner, rn, allKeys);
+        int PokeRandomNum2 = getPokemon(2, scanner, rn, allKeys);
 
             // Create Pokemon objects
             Pokemon Poke1 = database.get(PokeRandomNum1);
@@ -111,6 +71,32 @@ public class MainGame {
         } catch (FileNotFoundException e){
             System.out.println("ERROR: File was not found, ending program.");
         }
+    }
+
+    public static int getPokemon(int playerNum, Scanner scanner, Random rn, List<Integer> allKeys) throws FileNotFoundException {
+        int selectedPokeNum = 0;
+        while (true) {
+            System.out.println("Player " + playerNum + ", do you want to: ");
+            System.out.println("   1. Randomize your Pokemon");
+            System.out.println("   2. Select your Pokemon");
+            System.out.print("Your choice: ");
+            String player1Input = scanner.next();
+            System.out.println();
+
+            if (player1Input.equals("1")){
+                int randomIndex = rn.nextInt(allKeys.size());
+                selectedPokeNum = allKeys.get(randomIndex);
+                break;
+            }
+            else if (player1Input.equals("2")){
+                selectedPokeNum = getPokemonNumber();
+                break;
+            }
+            else{
+                System.out.println("ERROR: Invalid input. Please enter either 1 or 2 for your selection.");
+            }
+        }
+        return selectedPokeNum;
     }
 
     public static int getPokemonNumber() throws FileNotFoundException {
