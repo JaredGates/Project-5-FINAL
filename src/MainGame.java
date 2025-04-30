@@ -40,7 +40,7 @@ public class MainGame {
         while (true){
             PokeNum2 = getPokemon(2, scanner, rn, allKeys);
             if (PokeNum2 == PokeNum1){
-                System.out.println("ERROR: Both players cannot have the same Pokemon. Player 2, please select a new one.");
+                System.out.println("ERROR: Both players cannot have the same Pokemon. Player 2, please select a new one.\n");
             } else {
                 break;
             }
@@ -104,7 +104,7 @@ public class MainGame {
                 break;
             }
             else{
-                System.out.println("ERROR: Invalid input. Please enter either 1 or 2 for your selection.");
+                System.out.println("ERROR: Invalid input. Please enter either 1 or 2 for your selection.\n");
             }
         }
         return selectedPokeNum;
@@ -136,10 +136,10 @@ public class MainGame {
                         if (database.containsKey(dexNum)){
                             return dexNum;
                         } else{
-                            System.out.println("ERROR: Invalid Pokemon.");
+                            System.out.println("ERROR: Invalid Pokemon.\n");
                         }
                     } else {
-                        System.out.println("ERROR: Invalid input. Please enter a valid integer.");
+                        System.out.println("ERROR: Invalid input. Please enter a valid integer.\n");
                         pokeScan.next();
                     }
                 }
@@ -159,12 +159,12 @@ public class MainGame {
                             System.out.println("ERROR: Invalid Pokemon.");
                         }
                     } else {
-                        System.out.println("ERROR: Invalid input. Please enter a valid integer.");
+                        System.out.println("ERROR: Invalid input. Please enter a valid integer.\n");
                         pokeScan.next();
                     }
                 }
             } else{
-                System.out.println("ERROR: Invalid choice. Please enter either 1 or 2 to proceed.");
+                System.out.println("ERROR: Invalid choice. Please enter either 1 or 2 to proceed.\n");
             }
         }
     }
