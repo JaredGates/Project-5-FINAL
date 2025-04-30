@@ -1,9 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import static java.lang.Integer.parseInt;
 
@@ -27,57 +24,66 @@ public class MainGame {
         //Random number generator to generate random Pokemon between bounds
             Random rn=new Random();
 
+        // Get a list of all available keys in database
+        List<Integer> allKeys = new ArrayList<>(database.keySet());
+
         // Start of program dialogue
         System.out.println("Welcome to the Pokemon 1v1 Battle Simulator");
         System.out.println("Please select one of the following options to begin: ");
 
         // Player 1 input
-        System.out.println("Player 1, do you want to: ");
-        System.out.println("   1. Randomize your Pokemon");
-        System.out.println("   2. Select your Pokemon");
-        System.out.print("Your choice: ");
-        String player1Input = scanner.next();
-        System.out.println();
-
-        //Pokemon number variables
         int PokeRandomNum1 = 0;
+        while (true){
+            System.out.println("Player 1, do you want to: ");
+            System.out.println("   1. Randomize your Pokemon");
+            System.out.println("   2. Select your Pokemon");
+            System.out.print("Your choice: ");
+            String player1Input = scanner.next();
+            System.out.println();
 
-        if (player1Input.equals("1")){
-            PokeRandomNum1=rn.nextInt(1, database.size()+1);
-        }
-        else if (player1Input.equals("2")){
-            PokeRandomNum1 = getPokemonNumber();
-        }
-        else{
-            System.out.println("ERROR: Invalid input. Please enter either 1 or 2 for your selection.");
-            player1Input = scanner.next();
+
+            if (player1Input.equals("1")){
+                int randomIndex1 = rn.nextInt(allKeys.size());
+                PokeRandomNum1 = allKeys.get(randomIndex1);
+                break;
+            }
+            else if (player1Input.equals("2")){
+                PokeRandomNum1 = getPokemonNumber();
+                break;
+            }
+            else{
+                System.out.println("ERROR: Invalid input. Please enter either 1 or 2 for your selection.");
+            }
         }
 
         // Player 2 input
-        System.out.println("Player 2, do you want to: ");
-        System.out.println("   1. Randomize your Pokemon");
-        System.out.println("   2. Select your Pokemon");
-        System.out.print("Your choice: ");
-        String player2Input = scanner.next();
-        System.out.println();
-
-        //Pokemon number variables
         int PokeRandomNum2 = 0;
+        while (true) {
+            System.out.println("Player 2, do you want to: ");
+            System.out.println("   1. Randomize your Pokemon");
+            System.out.println("   2. Select your Pokemon");
+            System.out.print("Your choice: ");
+            String player2Input = scanner.next();
+            System.out.println();
 
-        if (player2Input.equals("1")){
-            PokeRandomNum2=rn.nextInt(1, database.size()+1);
-        }
-        else if (player2Input.equals("2")){
-            PokeRandomNum2 = getPokemonNumber();
-        }
-        else{
-            System.out.println("ERROR: Invalid input. Please enter either 1 or 2 for your selection.");
-            player2Input = scanner.next();
+
+            if (player2Input.equals("1")){
+                int randomIndex2 = rn.nextInt(allKeys.size());
+                PokeRandomNum2 = allKeys.get(randomIndex2);
+                break;
+            }
+            else if (player2Input.equals("2")){
+                PokeRandomNum2 = getPokemonNumber();
+                break;
+            }
+            else{
+                System.out.println("ERROR: Invalid input. Please enter either 1 or 2 for your selection.");
+            }
         }
 
-        //Create the two Pokémon based on the numbers gotten from the random number
-        Pokemon Poke1=database.get(PokeRandomNum1);
-        Pokemon Poke2=database.get(PokeRandomNum2);
+        // Create Pokemon objects
+        Pokemon Poke1 = database.get(PokeRandomNum1);
+        Pokemon Poke2 = database.get(PokeRandomNum2);
 
         //Output for Pokemon generation for player 1
             System.out.println("Player 1 has gotten the Pokémon: "+Poke1.getName()+" (DEX# " +PokeRandomNum1+")");
@@ -120,33 +126,52 @@ public class MainGame {
         // Variable for pokedex number to be returned to the main method
         int dexNum = 0;
 
-        // Get user input for dex number
-        System.out.println("Select one of the following options: ");
-        System.out.println("   1. I know my Pokemon's Pokedex number");
-        System.out.println("   2. I don't know my Pokemon's Pokedex number");
-        String userChoice = pokeScan.next();
+        // Get user input for Pokemon selection
+        while (true){
+            System.out.println("Select one of the following options: ");
+            System.out.println("   1. I know my Pokemon's Pokedex number");
+            System.out.println("   2. I don't know my Pokemon's Pokedex number");
+            String userChoice = pokeScan.next();
 
-        // Conditional if statement
-        if (userChoice.equals("1")){
-            System.out.print("Enter Pokemon's Pokedex number: ");
-            dexNum = pokeScan.nextInt();
-            System.out.println();
-        }
-        else if (userChoice.equals("2")){
-            System.out.println("Printing available Pokemon and their Pokedex numbers...");
-            for (Map.Entry<Integer, Pokemon> entry : database.entrySet()){
-                System.out.println(entry.getKey() + ": " + entry.getValue().getName());
+            if (userChoice.equals("1")){
+                while (true){
+                    System.out.print("Enter Pokemon's Pokedex number: ");
+                    if (pokeScan.hasNextInt()){
+                        dexNum = pokeScan.nextInt();
+                        if (database.containsKey(dexNum)){
+                            return dexNum;
+                        } else{
+                            System.out.println("ERROR: Invalid Pokemon.");
+                        }
+                    } else {
+                        System.out.println("ERROR: Invalid input. Please enter a valid integer.");
+                        pokeScan.next();
+                    }
+                }
+            } else if (userChoice.equals("2")){
+                System.out.println("Valid Pokedex:");
+                for (Map.Entry<Integer, Pokemon> entry: database.entrySet()){
+                    System.out.println(entry.getKey() + ": " + entry.getValue().getName());
+                }
+
+                while (true) {
+                    System.out.print("Enter Pokemon's Pokedex number: ");
+                    if (pokeScan.hasNextInt()){
+                        dexNum = pokeScan.nextInt();
+                        if (database.containsKey(dexNum)){
+                            return dexNum;
+                        } else {
+                            System.out.println("ERROR: Invalid Pokemon.");
+                        }
+                    } else {
+                        System.out.println("ERROR: Invalid input. Please enter a valid integer.");
+                        pokeScan.next();
+                    }
+                }
+            } else{
+                System.out.println("ERROR: Invalid choice. Please enter either 1 or 2 to proceed.");
             }
-            System.out.print("Enter Pokemon's Pokedex number: ");
-            dexNum = pokeScan.nextInt();
-            System.out.println();
         }
-        else{
-            System.out.println("ERROR: Invalid choice. Please enter either 1 or 2 as your choice.");
-            userChoice = pokeScan.next();
-        }
-
-        return dexNum;
     }
 
     /**
